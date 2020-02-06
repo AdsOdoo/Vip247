@@ -41,13 +41,15 @@
 
 	 		 <tbody>
         		<t t-foreach="o.order_line" t-as="line">
+				<t t-if="line.is_rental == true ">
             			<tr>
                 			<td class="text-left"><span>Día(s)</span></td>
                 			<!--<td class="text-left"><span t-field="line.product_id.default_code"/></td>-->
                 			<td class="text-left" style="font-size:13px;"><span t-field="line.name"/></td>
                 			<td class="text-left"><span t-field="line.pickup_date"/></td>
                 			<td class="text-left"><span t-field="line.return_date"/></td>
-            			</tr>             
+            			</tr>
+				</t>	
         		</t>
     			</tbody>
 		</table>
