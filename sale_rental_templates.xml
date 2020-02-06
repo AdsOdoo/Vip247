@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_sale_rental">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+           <t t-call="web.external_layout">
+                <div class="page">
+			<!--TITLE-->
+                
+                    	<h3>Orden de venta <span t-field="o.name"/></h3>
+                    	<div style="text-align:center;"><h3>CONTRATO DE ARRENDAMIENTO DE EQUIPO MÉDICO</h3></div>
+		    	<p style="font-size:14px;">
+		    	Que Celebran por una parte Cuidados Integrales Para La Salud SA de CV, a quien se le denominara el ARRENDADOR con domicilio en Calle Ignacio Machain 313
+			Col. Las Huertas Guadalajara, Jal. 44380 México RFC: CIS0112113M8 y por otra parte:</p>
+
+		   
+	 	   <div>
+			<!--CLIENT INFO-->
+			<strong style="font-size:15px;"><span t-field="o.partner_id"/></strong><br/>
+			<p style="font-size:15px;">A quien se le denominara como el ARRENDATARIO con los siguientes datos y clausulas :</p>
+               <datos xml:space="preserve">
+                   <strong style="font-size:15px;" xml:space="preserve">DOMICILIO:   </strong><span style="font-size:15px;" t-field="o.partner_id.street_name"/></datos><br/>
+			<strong style="font-size:15px;">COLONIA:  </strong><span style="font-size:15px;" t-field="o.partner_id.l10n_mx_edi_colony"/><br/>
+                    	<strong style="font-size:15px;">MUNICIPIO Y EDO:  </strong><span style="font-size:15px;" t-field="o.partner_id.state_id.name"/><br/>
+                    	<strong style="font-size:15px;">TELEFONO:  </strong><span style="font-size:15px;" t-field="o.partner_id.phone"/><br/>
+               <br/>
+			
+
+			<p style="font-size:14px;">1.- El ARRENDADOR entrega al ARRENDATARIO en calidad de alquiler el o los siguientes equipos:</p>
+
+		<table class="table table-sm">
+   			<thead>
+        			<tr>
+            				<th class="text-left">Unidad</th>
+            				<!--<th class="text-left">Código</th>-->
+            				<th class="text-left" style="width:40%;">Descripción</th>
+            				<th class="text-left">Fecha Inicio</th>
+            				<th class="text-left">Fecha Fin</th>
+        			</tr>
+    			</thead>
+
+	 		 <tbody>
+        		<t t-foreach="o.order_line" t-as="line">
+        			<t t-if="line.is_rental == true ">
+            			<tr>
+                			<td class="text-left"><span>Día(s)</span></td>
+                			<!--<td class="text-left"><span t-field="line.product_id.default_code"/></td>-->
+                			<td class="text-left" style="font-size:13px;"><span t-field="line.name"/></td>
+                			<td class="text-left"><span t-field="line.pickup_date"/></td>
+                			<td class="text-left"><span t-field="line.return_date"/></td>
+            			</tr>
+            		</t>           
+        		</t>
+    			</tbody>
+		</table>
+			
+			<!--CONTRACT TEXT-->
+			<p style="font-size:14px; text-align: justify;">2.- El equipo rentado por el ARRENDADOR no podrá ser subarrendado por el ARRENDATARIO a terceras personas a menos que cuente
+			con autorización expresa por parte del ARRENDADOR, en todo momento el primer ARRENDATARIO se constituye como el responsable
+			directo del buen uso y la conservación del equipo y se obliga a pagar el importe total del equipo en caso de robo o destrucción, así como
+			las reparaciones de los daños que sufra, siendo el ARRENDADOR la única persona autorizada para efectuar las reparaciones
+			mencionadas.</p>
+
+			<p style="font-size:14px; text-align: justify;">3.- El suministro del servicio contratado se hará de acuerdo a los términos y condiciones fijadas por duración, precios vigentes
+			establecidos por el ARRENDADOR durante el año calendario y/o el precio recurrente pactado con el cliente, los cuales acepta el
+			ARRENDATARIO en todas y cada una de sus partes mediante suscripción del presente contrato y firma del pagaré. El ARRENDADOR se
+			reserva el derecho de incrementar por así creerlo conveniente el precio pactado dando aviso al ARRENDATARIO antes del siguiente
+			vencimiento, nunca podrá sobrepasar el precio de lista vigente del año de que se trate. El ARRENDATARIO reconoce saber cual es el uso
+			y cuidado que requiere el equipo y acepta la responsabilidad de capacitar a cualquier otra persona que requiera manejarlo. En caso de
+			daño por mal uso o negligencia el ARRENDATARIO acepta pagar de forma inmediata el valor total del equipo.</p>
+
+			<p style="font-size:14px; text-align: justify;">4.- El equipo arrendado no podrá ser trasladado a otro domicilio distinto al estipulado en este contrato, solo podrá realizarlo con el
+			consentimiento del ARRENDADOR, si así lo desea tendrá que dejar un deposito en garantía por el valor del equipo sin excepción, los
+			gastos generados por su traslado, protección y seguro serán por cuenta y obligación del ARRENDATARIO. es necesario resaltar que si se da por enterado al ARRENDATARIO que no se realizarán reembolsos aun y cuando no se haya utilizado el equipo. En caso de arrendamiento de tanque(s) de oxigeno cubrirá
+			una renta diaria a partir del 8vo. día hasta el termino del servicio.</p>
+
+			<p style="font-size:14px; text-align: justify;">5.- El presente contrato tiene una fecha de vigencia: inicio y termino, señalados en la clausula No.1 y será renovado de forma automática
+			por plazos iguales hasta su cancelación. El ARRENDATARIO deberá solicitar de forma expresa la cancelación del contrato cuando menos
+			con tres días de anticipación al vencimiento, enviando un correo electrónico a lider.vip@cgsi.com.mx, entregando el equipo en
+			sucursal y/o solicitando se recoja en el domicilio del ARRENDATARIO; para que proceda la cancelación deberá estar al corriente de todos
+			sus pagos.</p>
+               
+               <p style="font-size:14px; text-align: justify;">6.-En caso que el cliente se atrase con el pago en tiempo y forma, este aceptara de manera incondicional el pago de intereses moratorios y gastos de cobranza que determine el ARRENDADOR, en ningún momento  podrá exceder de los límites que establezcan los ordenamientos que regulan estos importes dentro de la Zona Metropolitana del estado de Jalisco. Se entenderá que el pago está en tiempo cuando  antes de la fecha de renovación o el primer día de la renovación del contrato queda firme el importe pactado en la cuenta del ARRENDADOR.
+</p>
+
+			<p style="font-size:14px; text-align: justify;">7.- En caso de que una aseguradora realice el pago por la renta del equipo, seguirá siendo el ARRENDATARIO el responsable del
+			cuidado y uso correcto del mismo así como de cumplir con la cláusula 3 en caso de daño del equipo. En caso de rentar el equipo bajo el
+			esquema Renta Zero ™, se anexará al presente contrato la relación de pagos correspondiente.</p>
+
+			<p style="font-size:14px; text-align: justify;">8.-El ARRENDATARIO autoriza a cualquier persona que se encuentre en el domicilio para poder recibir el o los equipos contratados y también cualquier cambio que sea requerido para un buen funcionamiento del mismo.</p>
+
+            <p style="font-size:14px; text-align: justify;">9.-Para la Interpretación y cumplimiento de este contrato de                         arrendamiento, las partes se someten expresamente a las leyes del Estado de Jalisco y a los Tribunales de la Zona                     Metropolitana de esa ciudad, renunciando al fuero de sus domicilios que pudiera corresponderles en lo futuro.</p>
+            <br/>
+			<br/>
+            <br/>
+			<br/>
+
+			<!--SIGNATURE-->
+			<div class="row">
+				<div class="col-4"></div>
+				<div class="col-4" style="border-top:1px solid black;"></div>
+				<div class="col-4"></div>
+			</div>
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4"><center>Nombre y Firma</center></div>
+				<div class="col-4"></div>
+            </div>
+
+		   </div>
+
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+<report
+    id="sale_rental_report"
+    model="sale.order"
+    string="Contrato"
+    report_type="qweb-pdf"
+    name="sale_rental_report.report_sale_rental"
+    file="sale_rental_report.report_sale_rental"
+    attachment_use="True"
+    attachment="(object.state in ('sale')) and
+        ('Contrato'+(object.name or '').replace('/','')+'.pdf')"
+/>
+</odoo>
