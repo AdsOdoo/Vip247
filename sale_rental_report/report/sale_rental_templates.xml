@@ -41,7 +41,7 @@
 
 	 		 <tbody>
         		<t t-foreach="o.order_line" t-as="line">
-				<t t-if="line.is_rental == true ||  line.name == '[Q1723003] RECARGA DE OXIGENO Q 1723LTS 653'">
+			<t t-if="line.is_rental == true ">
             			<tr>
                 			<td class="text-left"><span>Día(s)</span></td>
                 			<!--<td class="text-left"><span t-field="line.product_id.default_code"/></td>-->
@@ -49,7 +49,7 @@
                 			<td class="text-left"><span t-field="line.pickup_date"/></td>
                 			<td class="text-left"><span t-field="line.return_date"/></td>
             			</tr>
-				</t>	
+			</t>	
         		</t>
     			</tbody>
 		</table>
