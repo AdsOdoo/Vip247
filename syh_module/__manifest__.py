@@ -6,7 +6,7 @@
     "category": "Other",
     "depends": ['sale_stock','base','calendar'],
     "data": [
-        'views/res_partner_view.xml',
+        #'views/res_partner_view.xml',
         'data/sequence_data.xml',
         'security/ir.model.access.csv',
         'security/syh_module_security.xml',
