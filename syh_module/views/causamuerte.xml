@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_solicitud_causamuerte_form" model="ir.ui.view">
+        <field name="name">causamuerte.form</field>
+        <field name="model">causamuerte</field>
+        <field name="arch" type="xml">
+            <form string="" >
+             <header>
+                 <!--   <button class="oe_highlight" string="Validar" type="object" name="validar_estudio" attrs="{'invisible':[('state','!=','draft')]}"/>
+                 <button class="oe_highlight" string="Imprimir Notas De Referencia / Traslado" type="action" name="%(syh_module.report_causamuerte_syh)d" />-->
+                  <!--  <field name="state" widget="statusbar"/> -->
+                    <field name="state" invisible="1"/>
+                 <!--   <field name="state" widget="statusbar"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="paciente"/>
+                        <field name="fecha_nacimiento"/>
+                        <field name="edad"/>
+                        <field name="genero"/>
+                        <field name="domicilio_actual"/>
+                        <field name="unidad_medica"/>
+                        <field name="fecha"/>
+                        <field name="time"/>
+                        <field name="campo_detalles"/>
+                    </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_solicitud_causamuerte_tree" model="ir.ui.view">
+        <field name="name">causamuerte.tree</field>
+        <field name="model">causamuerte</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte De Causa Muerte Sujeta a Vigilancia Epidemiológica">
+                <field name="paciente"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_solicitud_causamuerte_search" model="ir.ui.view">
+        <field name="name">causamuerte.search</field>
+        <field name="model">causamuerte</field>
+        <field name="arch" type="xml">
+            <search string="Buscar causamuerte">
+              <field name="paciente"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_solicitud_causamuerte_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Reporte De Causa Muerte Sujeta a Vigilancia Epidemiológica</field>
+        <field name="res_model">causamuerte</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Reporte de Causa de Muerte.
+          </p>
+        </field>
+              <!-- <field name="paciente"/> -->
+    </record>
+
+   <menuitem action="action_solicitud_causamuerte_tree"
+             id="menu_action_solicitud_causamuerte_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Reporte De Causa Muerte Sujeta a Vigilancia Epidemiológica"
+             sequence="80"
+             />
+
+</odoo>
+

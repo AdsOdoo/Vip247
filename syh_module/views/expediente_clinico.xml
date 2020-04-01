@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_expediente_clinico_form" model="ir.ui.view">
+        <field name="name">expediente.clinico.form</field>
+        <field name="model">expediente.clinico</field>
+        <field name="arch" type="xml">
+            <form string="" >
+              <header>
+               
+                <!--<button class="oe_highlight" string="Validar" type="object" name="validar_expediente" attrs="{'invisible':[('state','!=','draft')]}"/> -->
+               
+                <!-- <field name="state" widget="statusbar"/>-->
+                    <field name="state" invisible="1"/>
+                <button class="oe_highlight" string="Crear paciente" type="object" name="crear_paciente_paciente" />
+                <button class="oe_highlight" string="Cita de seguimiento" type="object" name="cita_deseguimiento_citas" />
+             	
+              </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group>
+                        
+                        <group>
+                          <field name="paciente" options="{'no_create':True}"/>
+                          <field name="unidad_medica" string="Unidad Médica"/>
+                         <!-- <field name="numero_expediente"/>-->
+                        </group>
+                        <group>
+                        	<field name="fecha"/>
+                          <field name="time"/>
+
+                        </group>
+                  </group>
+                    <notebook>
+                        <page string="INTERROGATORIO / ANAMNESIS">
+                         <!--   <group cols="4" string="DATOS DEL PACIENTE">
+                               <group>
+                                  <field name="dias" invisible="1"/>
+                                  <field name="meses" invisible="1"/>
+                                  <field name="apellido_paterno" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="apellido_materno" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nombres" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="genero" string="Género" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="edad" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_meses" string="Meses" attrs="{'invisible':[('meses','!=', True)],'readonly':[('state','!=','draft')]}" />
+
+                                  <field name="nota_dias" string="Días" attrs="{'invisible':[('dias','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="lugar_origen" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="lugar_residencia" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="fecha_nacimiento" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="estado_civil" string="Estado Civil" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="ocupacion_actual" attrs="{'readonly':[('state','!=','draft')]}"/>
+                               </group>
+                               <group>
+                                  <field name="escolaridad" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="religion" string="Religión" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_religion" string=" " attrs="{'invisible':[('religion','!=', '06')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="familiar_responsable" string="Familiar Responsable" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="parentesco" string="Parentesco" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_parentesco" string=" " attrs="{'invisible':[('parentesco','!=', '07')],'readonly':[('state','!=','draft')]}"/>
+
+                                  <field name="tipo_interrogatorio" string="Tipo Interrogatorio" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_tipo_interrogatorio" string=" " attrs="{'invisible':[('tipo_interrogatorio','!=', 'IN')],'readonly':[('state','!=','draft')]}"/>
+
+                                  <field name="domicilio_actual" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="telefono" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="correo_electronico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                               </group>
+                            </group> -->
+                            <group cols="4">
+                              <group string="ANTECEDENTES HEREDO-FAMILIARES">
+                                  <field name="padre_otro" invisible="1"/>
+                                  <field name="madre_otro" invisible="1"/>
+                                  <field name="hermanos_otro" invisible="1"/>
+                                  <field name="abuelos_paternos_otro" invisible="1"/>
+                                  <field name="abuelos_maternos_otro" invisible="1"/>
+                                  <field name="tios_paternos_otro" invisible="1"/>
+                                  <field name="tios_maternos_otro" invisible="1"/>
+                                  <field name="primos_paternos_otro" invisible="1"/>
+                                  <field name="primos_maternos_otro" invisible="1"/>
+                                  <field name="padre" string="Padre"  widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_padre" string=" " attrs="{'invisible':[('padre_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="madre" string="Madre" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_madre" string=" " attrs="{'invisible':[('madre_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="hermanos" string="Hermanos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_hermanos" string=" " attrs="{'invisible':[('hermanos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="abuelos_paternos" string="Abuelos Paternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_abuelos_paternos" string=" " attrs="{'invisible':[('abuelos_paternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="abuelos_maternos" string="Abuelos Maternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_abuelos_maternos" string=" " attrs="{'invisible':[('abuelos_maternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="tios_paternos" string="Tíos Paternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_tios_paternos" string=" " attrs="{'invisible':[('tios_paternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="tios_maternos" string="Tíos Maternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_tios_maternos" string=" "  attrs="{'invisible':[('tios_maternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="primos_paternos" string="Primos Paternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_primos_paternos" string=" " attrs="{'invisible':[('primos_paternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="primos_maternos" string="Primos Maternos" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                                  <field name="nota_primos_maternos" string=" " attrs="{'invisible':[('primos_maternos_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                              </group>
+                              <group string="ANTECEDENTES PERSONALES NO PATOLÓGICOS">
+                                  <field name="vivienda" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_vivienda" string=" " attrs="{'invisible':[('vivienda','!=', '02')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="higiene" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_higiene" string=" " attrs="{'invisible':[('higiene','!=', '02')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="dieta" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_dieta" string=" " attrs="{'invisible':[('dieta','!=', '02')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="zoonosis" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_zoonosis" string=" " attrs="{'invisible':[('zoonosis','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="tabaquismo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_tabaquismo" string=" " attrs="{'invisible':[('tabaquismo','!=', '04')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="alcoholismo" string="Alcoholismo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_alcoholismo" string=" " attrs="{'invisible':[('alcoholismo','!=', '04')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="toxicomanias" string="Toxicomanías" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_toxicomanias" string=" " attrs="{'invisible':[('toxicomanias','!=', '04')],'readonly':[('state','!=','draft')]}"/>
+                              </group>
+                            </group>
+                            <group string="ANTECEDENTES PERSONALES PATOLÓGICOS">
+                                  
+                                  <field name="bool_varicela" invisible="1"/>
+                                  <field name="bool_rubeola" invisible="1"/>
+                                  <field name="bool_sarampion" invisible="1"/>
+                                  <field name="bool_parotiditis" invisible="1"/>
+                                  <field name="bool_hepatitisa" invisible="1"/>
+                                  <field name="bool_hepatitisb" invisible="1"/>
+                                  <field name="bool_tetanos" invisible="1"/>
+                                  <field name="bool_tb" invisible="1"/>
+                                  <field name="bool_vih" invisible="1"/>
+                                  
+
+                                  <field name="bool_dm2" invisible="1"/>
+                                  <field name="bool_has" invisible="1"/>
+                                  <field name="bool_enfcardio" invisible="1"/>
+                                  <field name="bool_iam" invisible="1"/>
+                                  <field name="bool_erc" invisible="1"/>
+                                  <field name="bool_ca" invisible="1"/>
+                                  <field name="bool_enfrespi" invisible="1"/>
+
+
+
+
+                                  <field name="e_cronicodegen_otro" invisible="1"/>
+                                  <field name="e_infectoconta_otro" invisible="1"/>
+                                  <field name="e_infectoconta" string="Enfermedades Infecto-Contagiosas" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags" options="{'no_create':True}"/>
+                                 
+                                  
+                                  <field name="nota_varicela" attrs="{'invisible':[('bool_varicela','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_rubeola" attrs="{'invisible':[('bool_rubeola','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_sarampion" attrs="{'invisible':[('bool_sarampion','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_parotiditis" attrs="{'invisible':[('bool_parotiditis','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_hepatitisa" attrs="{'invisible':[('bool_hepatitisa','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_hepatitisb" attrs="{'invisible':[('bool_hepatitisb','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_tetanos" attrs="{'invisible':[('bool_tetanos','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_tb" attrs="{'invisible':[('bool_tb','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_vih" attrs="{'invisible':[('bool_vih','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_e_infectoconta" string="Otras" attrs="{'invisible':[('e_infectoconta_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  
+
+                                  <field name="e_cronicodegen" string="Enfermedades Crónico-Degenerativas" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags" options="{'no_create':True}"/>
+                                  
+                                  <field name="nota_dm2" string="Nota DM2" attrs="{'invisible':[('bool_dm2','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_has" string="Nota HAS" attrs="{'invisible':[('bool_has','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_enfcardio" string="Nota Enf. Cardiovascular" attrs="{'invisible':[('bool_enfcardio','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_iam" string="Nota IAM" attrs="{'invisible':[('bool_iam','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_erc" string="Nota ERC" attrs="{'invisible':[('bool_erc','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_ca" string="Nota CA" attrs="{'invisible':[('bool_ca','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_enfrespi" string="Nota Enf. Respiratoria" attrs="{'invisible':[('bool_enfrespi','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="nota_e_cronicodegen" string="OTRAS" attrs="{'invisible':[('e_cronicodegen_otro','!=', True)],'readonly':[('state','!=','draft')]}" />
+
+
+                                  <field name="traumatismos" string="Traumatismos / Fracturas" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_traumatismo" attrs="{'invisible':[('traumatismos','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <!--<field name="quirurgicos" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                  
+                                  <field name="bool_alimentos" invisible="1"/>
+                                  <field name="bool_medicamentos" invisible="1"/>
+                                  <field name="bool_otros" invisible="1"/>
+
+                                  <field name="alergias" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="alergias_m2m" string="Tipos De Alergias" attrs="{'invisible':[('alergias','!=', '01')],'readonly':[('state','!=','draft')]}" widget="many2many_tags"/>
+                                  
+                                  <field name="alergia_alimentos" string="Alergias Alimentos" attrs="{'invisible':[('bool_alimentos','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="alergia_medicamentos" string="Alergias Medicamentos" attrs="{'invisible':[('bool_medicamentos','!=', True)],'readonly':[('state','!=','draft')]}" />
+                                  <field name="alergia_otros" string="Otras Alergias" attrs="{'invisible':[('bool_otros','!=', True)],'readonly':[('state','!=','draft')]}" />
+
+                                  <field name="cirugias" string="Cirugías" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_cirugias" attrs="{'invisible':[('cirugias','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="hospitalizaciones_prev" string="Hospitalizaciones Previas" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_hospitalizaciones" attrs="{'invisible':[('hospitalizaciones_prev','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="transfusiones" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_transfusiones" string="Nota Transfusiones" attrs="{'invisible':[('transfusiones','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                                  <field name="esquema_vacunacion" string="Esquema De Vacunación" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                             <group string="ANTECEDENTES ANDROLÓGICOS / GINECO-OBSTÉTRICOS">
+                                  <!--<field name="generales" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                                  <field name="andro_especificos" string="Andrológicos" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                   <field name="nota_andro" attrs="{'invisible':[('andro_especificos','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="gineco_obstetricos" string="Gineco-Obstétricos" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                   <field name="nota_gineco" attrs="{'invisible':[('gineco_obstetricos','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              </group>
+                            <group string="MOTIVO DE CONSULTA">
+                                  <field name="motivo_consulta" string=" " attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="PADECIMIENTO ACTUAL">
+                                  <field name="padecimiento_actual" string=" " attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="INTERROGATORIO POR APARATOS Y SISTEMAS">
+                                  <field name="cardiovascular" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_cardiovasculas" string=" " attrs="{'invisible':[('cardiovascular','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="respiratorio" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_respiratorio" string=" " attrs="{'invisible':[('respiratorio','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="digestivo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_digestivo" string=" " attrs="{'invisible':[('digestivo','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="genito_urinario" string="Genito-Urinario" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_genito_urinario" string=" " attrs="{'invisible':[('genito_urinario','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="endocrino_metabolismo" string="Endócrino y Metabólico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_endocrino_metabolismo" string=" " attrs="{'invisible':[('endocrino_metabolismo','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="hematico_linfatico" string="Hemático y Linfático" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_hematico_linfatico" string=" " attrs="{'invisible':[('hematico_linfatico','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nervioso" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_nervioso" string=" " attrs="{'invisible':[('nervioso','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="musculo_esqueletico" string="Músculo-Esquelético" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_musculo" string=" " attrs="{'invisible':[('musculo_esqueletico','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="piel_tegumentos" string="Piel y Tegumentos" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_piel_tegumentos" string=" " attrs="{'invisible':[('piel_tegumentos','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="organos_sentidos" string="Órganos De Los Sentidos" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_organos_sentidos" string=" " attrs="{'invisible':[('organos_sentidos','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                                  <field name="esfera_psiquica" string="Esfera Psíquica" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                  <field name="nota_esfera_psiquica" string=" " attrs="{'invisible':[('esfera_psiquica','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+                          </group>
+                          <group string="TERAPÉUTICA EMPLEADA / ESTUDIOS DE LABORATORIO Y/O GABINETE YA EXISTENTES">
+                                <field name="archivos_adjuntos_ids" nolabel="1" colspan="4">
+                                    <tree name ="adjuntos" string="Archivos adjuntos">
+                                        <field name="description" />
+                                        <field name="doc_name" readonly="0" invisible="1"/>
+                                        <field name="docuemnto" filename="doc_name"/>
+                                    </tree>
+                                    <form string="Documentos">
+                                        <group colspan="4">
+                                           <field name="description" />
+                                           <field name="doc_name" readonly="0" invisible="1"/>
+                                           <field name="docuemnto" filename="doc_name"/>
+                                        </group>
+                                    </form>
+                                </field>
+                          </group>
+                            <field name="observaciones" class="oe_inline" placeholder="Observaciones"/>
+                        </page>
+                        
+                        <page string="EXPLORACIÓN FÍSICA">
+                          <group cols="4">
+                            <group string="SIGNOS VITALES">
+                              <field name="ta" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="fc" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="fr" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="temperatura" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="sp02" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="glucemia" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                            </group>
+                            <group string="SOMATOMETRÍA" >
+                              <field name="peso" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="talla" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="imc_texto" string="IMC" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="imc" string=" " attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="circunferencia_cuello" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="circunferencia_cintura" attrs="{'readonly':[('state','!=','draft')]}"/>
+     
+                            </group>
+                          </group>
+                           <group string="EXPLORACIÓN FÍSICA POR APARATOS Y SISTEMAS">
+                              <field name="habitus_exterior" string="Habitus Exterior" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_habitus_exterior" string=" " attrs="{'invisible':[('habitus_exterior','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="cabeza" attrs="{'readonly':[('state','!=','draft')]}"/>
+                             <field name="nota_cabeza" string=" " attrs="{'invisible':[('cabeza','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="cuello" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_cuello" string=" " attrs="{'invisible':[('cuello','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="torax" string="Tórax" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_torax" string=" " attrs="{'invisible':[('torax','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="abdomen" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_abdomen" string=" " attrs="{'invisible':[('abdomen','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="genitales" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_genitales" string=" " attrs="{'invisible':[('genitales','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="extremidades" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_extremidades" string=" " attrs="{'invisible':[('extremidades','!=', '01')],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="piel" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_piel" string=" " attrs="{'invisible':[('piel','!=', '01')],'readonly':[('state','!=','draft')],'readonly':[('state','!=','draft')]}"/>
+
+                              <!--<field name="lab_gab_otros" string="Laboratorios, Gabinete y Otros" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                              <!--<field name="diagnostico_presuntivo" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="estudios_diagnostico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="diagnosticos_definitivos" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                            </group>
+                          <group cols="4">
+
+                            <group string="DIAGNÓSTICO (S) PRESUNTIVO (S)">
+                              <field name="bool_dp" invisible="1"/>
+                              <field name="bool_df" invisible="1"/>
+
+                              <field name="diagnostico_presuntivo" string="Diagnóstico Presuntivo" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                              <field name="nota_dp" attrs="{'invisible':[('bool_dp','!=', True)],'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="TRATAMIENTO">
+                              <field name="farmacologico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="no_farmacologico" string="No Farmacológico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="nota_farmacologico" attrs="{'invisible':[('no_farmacologico','!=', '04')],'readonly':[('state','!=','draft')]}"/>
+
+                            </group>
+                            <group string="ESTUDIO (S) DIAGNÓSTICO (S)">
+                              <field name="bool_ed" invisible="1"/>
+                              <field name="estudios_diagnostico" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                              <field name="nota_ed" attrs="{'invisible':[('bool_ed','!=', True)],'readonly':[('state','!=','draft')]}"/>
+
+                              <field name="nota_estudios_diagnostico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="PRONÓSTICO">
+                              <field name="pronostico" string="Pronóstico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="DIAGNÓSTICO (S) DEFINITIVO (S)">
+                              <field name="diagnosticos_definitivos" string="Diagnóstico Definitivo" widget="many2many_tags" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                              <field name="nota_df" attrs="{'invisible':[('bool_df','!=', True)],'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="Alta">
+                              <!--<field name="seguimiento_semanal" string="Semanal" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="seguimiento_mensual" string="Mensual" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="seguimiento_trimestral" string="Trimestral" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="seguimiento_semestral" string="Semestral" attrs="{'readonly':[('state','!=','draft')]}"/>
+                              <field name="seguimiento_anual" string="Anual" attrs="{'readonly':[('state','!=','draft')]}"/>-->
+                              <field name="alta" string="Alta" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                            </group>
+                          </group>
+                        </page>
+                        <!--<page string="NOTAS DE EVOLUCIÓN / CITA DE SEGUIMIENTO">
+                            <group string="Notas De Evolución">
+                                <field name="nota_evolucion_ids" nolabel="1" colspan="4">
+                                    <tree name ="nota_evolucion" string="Notas De Evolución" editable="bottom">
+                                       <field name="fecha"/>
+                                       <field name="hora" widget="float_time" />
+                                      <field name="ta"/>
+                                      <field name="fc"/>
+                                      <field name="fr"/>
+                                      <field name="temperatura"/>
+                                      <field name="sp02"/>
+                                      <field name="peso"/>
+                                      <field name="talla"/>
+                                    </tree>
+                                </field>
+                          </group>
+                        </page>-->
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_expediente_clinico_tree" model="ir.ui.view">
+        <field name="name">expediente.clinico.tree</field>
+        <field name="model">expediente.clinico</field>
+        <field name="arch" type="xml">
+            <tree string="Expediente Clínico">
+            	<field name="state" invisible="1"/>
+                <field name="name"/>
+                <field name="nombre_completo"/>
+                <field name="edad"/>
+                <!--<field name="partner_id" />-->
+                <field name="unidad_medica"/>
+                <field name="fecha"/>
+                <field name="time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_expediente_clinico_search" model="ir.ui.view">
+        <field name="name">expediente.clinico.search</field>
+        <field name="model">expediente.clinico</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Expediente Clínico">
+                <!--<field name="name"/>-->
+                <field name="expediente_clinico" />
+                <!--<field name="partner_id" />-->
+                <field name="nombre_completo"/>
+                <field name="fecha"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_expediente_clinico_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Expediente Clínico</field>
+        <field name="res_model">expediente.clinico</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Nota De Ingreso.
+          </p>
+        </field>
+    </record>
+    
+    
+	
+   <menuitem action="action_expediente_clinico_tree"
+             id="menu_action_expediente_clinico_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Expediente Clínico"
+             sequence="20"
+             />
+
+</odoo>
+

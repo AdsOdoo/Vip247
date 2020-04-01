@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <template id="report_coni_somnox_document">
+   		<t t-call="web.html_container">
+	        <div class="header">      
+	                <div class="col-xs-6 float-left">
+	                    <img t-att-src="'/syh_module/static/src/img/logo01.png'" style="max-height: 150px;max-width:200px;"/>
+	                </div>
+	                <div class="col-xs-6 float-right" style="padding-left:300px;">
+	                    <strong>Dirección: </strong>Juan Palomar y Arias #420<br/>
+	                    <strong>Col. </strong>Monraz C.P. 44680<br/>
+	                    <span> Guadalajara, Jalisco </span><br/>
+	                    <strong>Correo electrónico: </strong> somnox@saludyhogar.mx<br/>
+	                    <strong>Tel. </strong>3331525013<br/>
+	                </div>
+	        </div>
+	
+	        <div class="article o_report_layout_standard">
+	        
+	            <div class="page" style="padding-top:0px;">
+	                <div class="oe_structure" />                                    
+	                                        
+	
+	<div class="float-right">No. secuencial <strong><span t-field="docs.name"/></strong><br/><br/></div>
+	
+	<div style="text-align:center;"><strong> Carta de Consentimiento Informado para Estudio de Poligrafía Respiratoria.</strong><br/></div>
+	<br/>
+	Yo, <strong><span t-field="docs.paciente.apellido_paterno"/> <span t-field="docs.paciente.apellido_materno"/> <span t-field="docs.paciente.nombres"/></strong>, aceptó el aviso de
+	privacidad publicado en www.trastornodeldormir.com.mx manifiesto que estoy enterado y aceptó que el
+	técnico: <strong><span t-field="docs.tecnico_somnox"/></strong> me realice el estudio de poligrafía respiratoria que
+	consiste en:
+	<ul>
+	<li>Responderé a cuestionarios sencillos sobre mi historial médico y que valoran la posibilidad de que me
+	quede dormido en algunas situaciones.</li>
+	<li>Posteriormente se me medirá la circunferencia de cuello con una cinta métrica.</li>
+	<li>Se me realizará un estudio llamado poligrafía respiratoria, que consiste en dormir una noche
+	conectado a una grabadora (polígrafo) que será colocado en el pecho, que lleva un cinturón elástico en el
+	pecho y/o abdomen, así como unas puntas nasales de látex que sirven para medir el flujo de aire por la
+	nariz y un sensor de pulsioximetría en alguno de los dedos de mi mano no dominante. Una vez que este
+	conectado se me pedirá que duerma en una habitación durante toda la noche y el estudio termina a la
+	mañana siguiente. En un 10% puede ser necesario repetir el estudio y esto no tiene costo extra.</li>
+	<li>Se me realizará una segunda intervención para titulación de CPAP; en la que se me colocará una
+	mascarilla (que puede contener látex), que cubre la nariz o la nariz y la boca, conectada a un aparato
+	llamado CPAP, el cual da aire a presión (no oxígeno, sino aire ambiente) para evitar que se cierre la
+	garganta y así mejorar mi respiración. La mascarilla puede ocasionar riesgos leves como lesiones
+	superficiales en la piel.</li>
+	<li>Finalmente Entiendo que la información colectada durante mi participación en este estudio es clasificada como datos
+	personales sensibles y acepto que sea utilizada con fines académicos y/o de investigación Yo entiendo que la
+	información será usada en cumplimiento de las leyes y regulaciones aplicables y no se hará referencia a mi persona
+	por mi nombre en bases de datos o en algún reporte o publicación relacionada. Estoy enterado que podré ejercer mis
+	derechos ARCO comunicándome al tel. 1201 4800</li>
+	</ul>
+	Manifiesto que conozco y se me explico ampliamente el estudio y por tanto acepto que se me realice el estudio
+	de sueño programado. <br/> <br/>
+	
+	<div style="border:1px solid black; height:250px;">
+	    <br/>
+	    <br/>
+	    <br/>
+	    <span style="padding-left:150px;">__________________________________________</span> <span style="padding-left:75px;">_________________________ </span> <br/>
+	    <span style="padding-left:150px;">Nombre y firma del paciente</span> <span style="padding-left:200px;"> Fecha </span> <br/><br/><br/>
+	
+	    <span style="padding-left:150px;">__________________________________________</span> <span style="padding-left:75px;">_________________________ </span> <br/>
+	    <span style="padding-left:75px;">Testigo 1 Nombre, Firma y Relación con el paciente</span> <span style="padding-left:125px;"> Fecha </span> 
+	
+	
+	</div>
+	
+	<br/>
+	<br/>
+	Así mismo en caso de tener problemas, dudas o cualquier pregunta relacionada al estudio usted puede llamar al
+	teléfono: 33 3152 5013.
+	                        </div>
+	                    </div>
+	               </t>
+    </template>
+
+    <report 
+        id="report_coni_somnox"
+        string="Reporte Consentimiento Informado Somnox"
+        model="consentimiento.informado" 
+        report_type="qweb-pdf"
+        file="syh_module.report_coni_somnox_document" 
+        name="syh_module.report_coni_somnox_document" 
+        menu="False"
+    />
+
+</odoo>

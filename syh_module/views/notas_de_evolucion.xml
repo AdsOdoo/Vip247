@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_notas_de_evolucion_form" model="ir.ui.view">
+        <field name="name">notas.evolucion.form</field>
+        <field name="model">notas.evolucion</field>
+        <field name="arch" type="xml">
+            <form string="" >
+             <header>
+              <!--      <button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <field name="state" widget="statusbar"/> -->
+                    <!--<button class="oe_highlight" string="Cita de seguimiento" type="object" name="cita_deseguimiento_citas" />-->
+                    <field name="state" invisible="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group cols="4" string="Datos del paciente">
+                        <field name="paciente" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                        <field name="unidad_medica" string="Unidad Médica" attrs="{'readonly':[('state','!=','draft')]}" force_save="1"/>
+                        <field name="fecha" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="hora" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </group>
+                <notebook>
+                    <page string="Nota De Evolución">
+                    <group cols="4">
+                        <field name="ta" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="temperatura" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fc" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fr" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="sp02" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="peso" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="talla" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                        <!--CAMPOS EXTRA-->
+                        <field name="glucemia" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="imc" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="circunferencia_cintura" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="circunferencia_cuello" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                        <!--<field name="nota_evolucion" attrs="{'readonly':[('state','!=','draft')]}"/>-->                        
+                        <field name="subjetivo_text" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="objetivo_text" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="analisis_text" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="plan_text" attrs="{'readonly':[('state','!=','draft')]}"/>
+                       <!-- <field name="cita_text" attrs="{'readonly':[('state','!=','draft')]}"/> -->
+
+                    </group>
+                    </page>
+                </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_notas_de_evolucion_tree" model="ir.ui.view">
+        <field name="name">notas.evolucion.tree</field>
+        <field name="model">notas.evolucion</field>
+        <field name="arch" type="xml">
+            <tree string="Notas De Evolución">
+            	<field name="nombres" />
+            	<field name="apellido_paterno"/>
+            	<field name="apellido_materno" />
+                <field name="unidad_medica"/>
+                <field name="edad"/>
+                <field name="fecha"/>
+                <field name="hora"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_notas_de_evolucion_search" model="ir.ui.view">
+        <field name="name">notas.evolucion.search</field>
+        <field name="model">notas.evolucion</field>
+        <field name="arch" type="xml">
+            <search string="Search Operating Unit">
+               <!--<field name="nombres"/>-->
+                <field name="unidad_medica"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_notas_de_evolucion_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Notas De Evolución</field>
+        <field name="res_model">notas.evolucion</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Notas De Evolución.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_notas_de_evolucion_tree"
+             id="menu_action_notas_de_evolucion_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Notas De Evolución"
+             sequence="30"
+             />
+
+</odoo>
+

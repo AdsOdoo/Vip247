@@ -1,0 +1,13 @@
+id,codigo_ic
+infecto_contagiosas_01,NEGADO
+infecto_contagiosas_02,VARICELA
+infecto_contagiosas_03,RUBEOLA
+infecto_contagiosas_04,SARAMPIÓN
+infecto_contagiosas_05,PAROTIDITIS
+infecto_contagiosas_06,HEPATITIS A
+infecto_contagiosas_07,HEPATITIS B
+infecto_cotnagiosas_08,HEPATITIS C
+infecto_contagiosas_09,TÉTANOS
+infecto_contagiosas_10,TB
+infecto_contagiosas_11,VIH
+infecto_contagiosas_12,OTRAS

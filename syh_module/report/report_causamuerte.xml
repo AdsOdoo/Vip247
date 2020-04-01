@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_landscape_causamuerte" model="report.paperformat">
+        <field name="name">A4 Landscape Payslip Batch</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">9</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <template id="report_causamuerte_syh_document">
+    	<t t-call="web.html_container">
+    		<div class="header">
+	            <div class="col-xs-6 float-left" style="text-align:right;font-size:20px;padding-left:70px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+							<img src="/syh_module/static/src/img/logo01.png" style="max-height: 150px;max-width:150px;"/>
+						</t>
+	                    <t t-if="docs.unidad_medica == '02'">
+							<img src="/syh_module/static/src/img/logo02.jpg" style="max-height: 150px;max-width:150px;"/>	                    </t>
+	            </div>
+
+	        
+	           <div class="col-xs-6 float-right" style="text-align:right;font-size:20px;padding-right:100px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+	                        <strong style="font-size:25px;">Clínica para Trastornos del Dormir</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    <t t-if="docs.unidad_medica == '02'">
+	                        <strong style="font-size:25px;">SALUD Y HOGAR EXPRESS</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 </span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    </div>
+	            </div>
+	            <br/>
+	            <br/>
+
+	    	<!--FOOTER-->
+	        <div class="footer">
+	          <div class="text-center" style="border-top: 1px solid black;">
+	                        <t t-if="docs.unidad_medica == '01'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	                        <t t-if="docs.unidad_medica == '02'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 e-mail: syhexpress@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	          </div>
+	        </div>
+	        
+	        <div class="article o_report_layout_standard">
+	
+	        <div class="page">
+				<div class="oe_structure" />
+
+				<div style="padding-top:150px;font-size:20px;padding-left:75px;padding-right:75px;">
+				
+				<center> <span style="font-weight:bold;font-size:35px; solid black;">REPORTE DE CAUSA MUERTE SUJETA A VIGILANCIA EPIDEMIOLÓGICA</span> </center>
+				<br/>
+
+	                               <div class="col-xs-6 float-left"><strong>Nombre: </strong> <span t-esc="docs.paciente.apellido_paterno" /> <span t-esc="docs.paciente.apellido_materno" /> <span t-esc="docs.paciente.nombres" /></div>
+	                               <div class="col-xs-6 float-right" text-align="left;"><strong>Edad: </strong> <span t-field="docs.paciente.edad"/></div>
+	                               <br/><br/>
+	                               <div class="col-xs-6 float-left"><strong>Domicilio: </strong><span t-field="docs.paciente.domicilio_actual"/></div>
+	                               <div class="col-xs-6 float-right" style="text-align:left;"><strong>Fecha:</strong><span t-field="docs.fecha"/></div>
+	                    <div style="padding-left:150px;padding-top:40px;font-size:20px;height:700px;max-width:1000px;">
+	                            <span t-field="docs.campo_detalles" />
+	                    </div>   
+	            </div>   
+
+	            <center> <span style="font-size:20px;border-top:1px solid black;">Nombre y Firma del Médico</span> </center>
+	                    
+					</div>
+	            </div>
+	     </t>
+    </template>
+
+    <report 
+        id="report_causamuerte_syh"
+        string="Reporte De Causa Muerte Sujeta a Vigilancia Epidemiológica"
+        model="causamuerte" 
+        report_type="qweb-pdf"
+        file="syh_module.report_causamuerte_syh_document" 
+        name="syh_module.report_causamuerte_syh_document" 
+        paperformat="syh_module.paperformat_landscape_causamuerte"
+    />
+
+</odoo>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_landscape_expediente" model="report.paperformat">
+        <field name="name">A4 Landscape Payslip Batch</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">9</field>
+        <field name="dpi">110</field>
+    </record>
+	
+    <template id="report_expedienteclinico_syh">
+    	<t t-call="web.html_container">
+			<div class="header">
+	            <!--<div class="row">
+					    <div class="col-xs-6" style="padding-left:50px;padding-top-50px;">
+	                	<<img t-if="res_company.logo" t-att-src="'data:image/png;base64,%s' % res_company.logo" style="max-height: 90px;max-width:100px;"/>
+	                	<th>NOTA DE EVOLUCIÓN</th>
+	                	<t t-if="docs.unidad_medica == '01'">
+	                	<img t-att-src="'/syh_module/static/src/img/logo01.png'" style="max-height: 280px;max-width:280px;padding-left:100px;padding-top:50px;"/>
+						 
+	                	</t>
+	                	<t t-if="docs.unidad_medica == '02'">
+	                	<img t-att-src="'/syh_module/static/src/img/logo02.jpg'" style="max-height: 350px;max-width:350px;padding-left:100px;padding-top:50px;"/>
+						   
+	                	</t>
+	            </div>-->
+
+	            <div class="col-xs-6 float-left" style="text-align:right;font-size:20px;padding-left:70px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+							<img src="/syh_module/static/src/img/logo01.png" style="max-height: 150px;max-width:150px;"/>
+						</t>
+	                    <t t-if="docs.unidad_medica == '02'">
+							<img src="/syh_module/static/src/img/logo02.jpg" style="max-height: 150px;max-width:150px;"/>	                    </t>
+	            </div>
+
+	        
+	            <div class="col-xs-6 float-right" style="text-align:right;font-size:20px;padding-right:100px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+	                        <strong style="font-size:25px;">Clínica para Trastornos del Dormir</strong><br/>
+	                        <span>Dra. Soledad Limón Villalpando</span> <br/>
+	                        <span style="font-size:13px;">CÉDULA PROFESIONAL PEJ 343316</span><br/>
+	                    </t>
+	                    <t t-if="docs.unidad_medica == '02'">
+	                        <strong style="font-size:25px;">SALUD Y HOGAR EXPRESS</strong><br/>
+	                        <span>Dra. Paola Hidrogo Arechiga</span> <br/>
+	                        <span style="font-size:13px;">CÉDULA PROFESIONAL PEJ 344896</span><br/>
+	                    </t>
+	                    </div>
+	            </div>
+	            <br/>
+	            <br/>
+
+	    	<!--FOOTER-->
+	        <div class="footer">
+	          <div class="text-center" style="border-top: 1px solid black;">
+	                        <t t-if="docs.unidad_medica == '01'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	                        <t t-if="docs.unidad_medica == '02'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 e-mail: syhexpress@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	          </div>
+	        </div>
+
+	        <!--TERMINA FOOTER-->
+
+
+
+	    	<div class="article o_report_layout_standard">
+			
+				<div class="page">
+					<div class="oe_structure" />
+						<div style="font-size:25px;padding-top:170px;" >
+	             
+	                		<center> <span style="padding-left:70px;font-weight:bold;font-size:25px;">NOTA DE EVOLUCIÓN</span> </center>
+	
+						 				<style>
+											table {
+											  margin: 0 auto;
+											  border-collapse: collapse;
+											  border: 2px solid black;
+											  font-size:12px;
+											 }
+											table td {
+											  padding: .75rem;
+											  border: 2px solid black;
+											  font-size:11px;
+											}
+										</style>	
+										<body>
+											<div style=" margin: 0px 90px 0px 50px;;padding-top:30px;">
+											<table   style="width:100%">
+												  <tr>
+												    <td style="font-size:12px;" rowspan="2"><b>NOMBRE DEL PACIENTE:</b><p><b><span  style="font-size:17px;" t-esc="docs.paciente.apellido_paterno" /></b> <b><span style="font-size:17px;" t-esc="docs.paciente.apellido_materno" /></b>, <b><span  style="font-size:17px;" t-esc="docs.paciente.nombres" /></b></p></td>
+												    <td><b>EDAD:</b></td>
+												    <td><b>GÉNERO:</b></td>
+												  </tr>
+												  <tr style="border:1px solid black;">
+												    <td ><b><span t-esc="docs.paciente.edad.codigo_edad" /></b></td>
+													<td>	<t t-if="docs.paciente.genero == 'M'"><b>MASCULINO</b></t>
+														<t t-if="docs.paciente.genero == 'F'"><b>FEMENINO</b></t>
+													</td>
+												  </tr>
+												<tr></tr>  
+											</table>
+											<tr></tr>
+											<table   style="width:100%">
+											
+											<tr>
+											    <td style="width:20%"><b>FECHA:</b></td>
+											    <td><b><span/>SUBJETIVO.-</b></td>
+											 </tr>
+	
+											<tr>
+												<td><span t-field="docs.fecha" /></td>
+											    <td rowspan="5"><span t-field="docs.subjetivo_text"/></td>
+											</tr>
+										     <tr>
+											    <td><b>HORA:</b></td>
+											 </tr>
+											 <tr>
+											 	<td> <span t-field="docs.hora" /> hrs.</td>
+												 <!--<t t-esc="'%s:%s' % (str(docs.hora).split('.')[0], str(int(float(str('%.2f' % docs.hora).split('.')[1])/100*60)).zfill(2))" /> -->
+	<!-- <span t-field="docs.hora" t-field-options='{"widget": "float_time"}'/>-->
+	
+											 </tr>
+											 <tr>
+											    <td><b>SIGNOS VITALES</b></td>
+											 </tr>
+	
+											 <tr>
+											    <td style="width:20%"><b>TA:</b></td>
+											 </tr>
+											<tr>
+												<td><span t-field="docs.ta" /></td>
+											    <td><b><span/>OBJETIVO.-</b></td>
+											</tr>
+										     <tr>
+											    <td><b>FC:</b></td>
+												<td rowspan="5"><span t-field="docs.objetivo_text"/></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.fc" /></td>
+											 </tr>
+	
+											 <tr>
+											    <td style="width:20%"><b>TEMPERATURA (°C):</b></td>
+											 </tr>
+											<tr>
+												<td><span t-field="docs.temperatura" /></td>
+											</tr>
+										     <tr>
+											    <td><b>Sa02%:</b></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.sp02" /></td>
+											    <td><b><span/>ANÁLISIS.-</b></td>
+											 </tr>
+											
+											 <tr>
+											    <td style="width:20%"><b>GLUCEMIA:</b></td>
+												<td rowspan="5"><span t-field="docs.analisis_text"/></td>
+											 </tr>
+											<tr>
+												<td><span t-field="docs.glucemia" /></td>
+											</tr>
+										     <tr>
+											    <td><b>PESO (Kg):</b></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.peso" /></td>
+											 </tr>
+											 <tr>
+											    <td><b>TALLA (Mtrs):</b></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.talla" /></td>
+											    <td><b><span/>PLAN.-</b></td>
+											 </tr>
+											 <tr>
+											    <td><b>IMC:</b></td>
+												<td rowspan="6"><span t-field="docs.plan_text"/></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.imc"/></td>
+											 </tr>
+	
+											 <tr>
+											    <td style="width:20%"><b>CINCUNFERENCIA DE CINTURA (cm):</b></td>
+											   <!-- <td><b><span/>CITA DE SEGUIMIENTO.-</b></td>-->
+											 </tr>
+											<tr>
+												<td><span t-field="docs.circunferencia_cintura" /></td>
+												<!--<td rowspan="3"><span t-field="docs.cita_text"/></td>-->
+											</tr>
+										     <tr>
+											    <td><b>CINCUNFERENCIA DE CUELLO (cm):</b></td>
+											 </tr>
+											 <tr>
+											 	<td><span t-field="docs.circunferencia_cuello" /></td>
+											 </tr>
+											 
+										</table>
+										</div>
+									</body>
+							</div>
+						</div>
+			    	</div>
+			    </t>
+	</template>
+
+	<report 
+        id="report_expediente_clinico_syh"
+        string="Notas De Evolución"
+        model="notas.evolucion" 
+        report_type="qweb-pdf"
+        file="syh_module.report_expedienteclinico_syh" 
+        name="syh_module.report_expedienteclinico_syh"
+        paperformat="syh_module.paperformat_landscape_expediente"
+    />
+
+</odoo>

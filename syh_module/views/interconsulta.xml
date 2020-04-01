@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_solicitud_interconsulta_form" model="ir.ui.view">
+        <field name="name">solicitud.interconsulta.form</field>
+        <field name="model">solicitud.interconsulta</field>
+        <field name="arch" type="xml">
+            <form string="" >
+             <header>
+                 <!--   <button class="oe_highlight" string="Validar" type="object" name="validar_estudio" attrs="{'invisible':[('state','!=','draft')]}"/>-->
+                    <!--<button class="oe_highlight" string="Imprimir Interconsulta" type="action" name="%(syh_module.report_solicitud_interconsulta_syh)d" />-->
+                  <!--  <field name="state" widget="statusbar"/> -->
+                    <field name="state" invisible="1"/>
+                 <!--   <field name="state" widget="statusbar"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group string="Interconsulta">
+                        <field name="paciente" string="Paciente"/>
+                        <field name="edad"/>
+                        <field name="domicilio" string="Domicilio"/>
+                        <field name="fecha" string="Fecha"/>
+                        <field name="time"/>
+                        <field name="unidad_medica" string="Unidad Médica"/>
+                        <field name="diagnostico" string="Diagnóstico"/>
+                        <field name="text_motivo"/>
+                        <field name="text_solicitud"/>
+                        <field name="text_servicio"/>
+                        <field name="medico_solicitante"/>
+                        <field name="medico_receptor"/>
+                        <field name="fecha_recibido"/>
+                        <field name="time_recibido"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_solicitud_interconsulta_tree" model="ir.ui.view">
+        <field name="name">solicitud.interconsulta.tree</field>
+        <field name="model">solicitud.interconsulta</field>
+        <field name="arch" type="xml">
+            <tree string="Interconsulta">
+            	<field name="paciente"/>
+               <field name="fecha"/>
+                <field name="unidad_medica"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_solicitud_interconsulta_search" model="ir.ui.view">
+        <field name="name">solicitud.interconsulta.search</field>
+        <field name="model">solicitud.interconsulta</field>
+        <field name="arch" type="xml">
+            <search string="Buscar interconsulta">
+               <field name="paciente"/>
+               <field name="fecha"/>
+                <field name="unidad_medica"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_solicitud_interconsulta_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Interconsulta</field>
+        <field name="res_model">solicitud.interconsulta</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Interconsulta.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_solicitud_interconsulta_tree"
+             id="menu_action_solicitud_interconsulta_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Interconsulta"
+             sequence="40"
+             />
+
+</odoo>
+

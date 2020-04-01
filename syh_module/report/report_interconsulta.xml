@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_landscape_solicitud_interconsulta" model="report.paperformat">
+        <field name="name">A4 Landscape Payslip Batch</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">9</field>
+        <field name="dpi">110</field>
+    </record>
+	
+    <template id="report_solicitud_interconsulta_syh_document">
+    	<t t-call="web.html_container">
+    		<div class="header">
+	            <div class="col-xs-6 float-left" style="text-align:right;font-size:20px;padding-left:70px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+							<img src="/syh_module/static/src/img/logo01.png" style="max-height: 150px;max-width:150px;"/>
+						</t>
+	                    <t t-if="docs.unidad_medica == '02'">
+							<img src="/syh_module/static/src/img/logo02.jpg" style="max-height: 150px;max-width:150px;"/>	                    </t>
+	            </div>
+
+	        
+	           <div class="col-xs-6 float-right" style="text-align:right;font-size:20px;padding-right:100px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+	                        <strong style="font-size:25px;">Clínica para Trastornos del Dormir</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    <t t-if="docs.unidad_medica == '02'">
+	                        <strong style="font-size:25px;">SALUD Y HOGAR EXPRESS</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 </span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    </div>
+	            </div>
+	            <br/>
+	            <br/>
+
+	    	<!--FOOTER-->
+	        <div class="footer">
+	          <div class="text-center" style="border-top: 1px solid black;">
+	                        <t t-if="docs.unidad_medica == '01'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	                        <t t-if="docs.unidad_medica == '02'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 e-mail: syhexpress@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	          </div>
+	        </div>
+
+
+	        <div class="article o_report_layout_standard">
+			
+				<div class="page">
+					<div class="oe_structure" />
+						<div style="font-size:25px;padding-top:220px;" >
+
+							<center> <span style="font-weight:bold;font-size:30px;">SOLICITUD DE INTERCONSULTA MÉDICA</span> </center>  <br/> <br/>
+	             
+	                		<table class="table table-bordered" style="cellpadding=10px;width:100%;font-size:20px;">
+	                        <tr  style="border:1px solid black">
+	                            <td colspan="4" style="border:1px solid black" width="60%;"><strong>UNIDAD MÉDICA:</strong> <br/><span t-field="docs.unidad_medica"/></td>
+	                            <td colspan="2"  style="border:1px solid black" width="20%;"><strong>FECHA Y HORA DE SOLICITUD:</strong> <br/><span t-field="docs.fecha"/> <span t-field="docs.time"/></td>
+	                            <!--<td width="40%;"><strong>Hora</strong><span t-field="docs.fecha"/></td>-->
+	                        </tr>
+	                        <tr  style="border:1px solid black">
+	                            <td colspan="4" style="border:1px solid black"><strong>NOMBRE DEL PACIENTE:</strong> <br/><span t-field="docs.paciente"/></td>
+	                            <td colspan="2"  style="border:1px solid black" width="20%;"><strong>EDAD:</strong> <br/><span t-field="docs.edad"/></td>
+	                        </tr>
+	                        <tr style="border:1px solid black">
+	                            <td colspan="6" style="border:1px solid black"><strong>DIAGNÓSTICO:</strong> <br/><span t-field="docs.diagnostico"/></td>
+	                            
+	                        </tr>
+	                        <tr  style="border:1px solid black">
+	                            <td colspan="3" style="border:1px solid black"><strong>SERVICIO QUE SOLICITA LA INTERCONSULTA:</strong> <br/><span t-field="docs.text_solicitud"/></td>
+	                            <td colspan="3" style="border:1px solid black"><strong>NOMBRE DEL MÉDICO SOLICITANTE:</strong> <br/><span t-field="docs.medico_solicitante"/></td>
+	                        </tr>
+	                        <tr  style="border:1px solid black" height="30px;" rowspan="2">
+	                            <td colspan="6" style="border:1px solid black"><strong>MOTIVO DE LA INTERCONSULTA:</strong> <br/><span t-field="docs.text_motivo"/></td>
+	                        </tr>
+	                        <tr  style="border:1px solid black">
+	                            <td colspan="3" style="border:1px solid black" width="50%;"><strong>SERVICIO AL QUE SE LE SOLICITA LA INTERCONSULTA:</strong> <br/><span t-field="docs.text_servicio"/></td>
+	                            <td colspan="3" style="border:1px solid black" width="50%;"><strong>NOMBRE DEL MÉDICO QUE RECIBE LA SOLICITUD:</strong> <br/><span t-field="docs.medico_receptor"/></td>
+	                        </tr>
+	                        <tr  style="border:1px solid black">
+	                            <td colspan="4" width="60%;" style="border:1px solid black;"></td>
+	                            <td colspan="2" width="40%;" style="border:1px solid black;"><strong>FECHA Y HORA DE RECIBIDO:</strong> <br/><span t-field="docs.fecha_recibido"/>  <span t-field="docs.time_recibido"/></td>
+	                        </tr>
+	                    </table>
+
+	            <br/>
+	            <br/>
+	            <br/>
+	                
+	
+	                <div style="margin-top:70px;">
+	
+	                    <table style="width:100%;font-size 20px;">
+	                        <tr>
+	                            <td class="col-xs-1"></td>
+	                            <td class="col-xs-4" style="text-align:center">
+	                            	______________________________________<br/>
+	                                SOLICITÓ<br/>
+	                                NOMBRE Y FIRMA DEL MÉDICO
+	                            </td>
+	                            <td class="col-xs-2"></td>
+	                            <td class="col-xs-4" style="text-align:center">
+	                            	______________________________________<br/>
+	                                RECIBIÓ<br/>
+	                                NOMBRE Y FIRMA DEL MÉDICO
+	                            </td>
+	                            <td class="col-xs-1"></td>
+	
+	                        </tr>
+	                    </table>
+	                </div>
+
+											
+										
+							</div>
+						</div>
+			    	</div>
+			
+		</t>
+	</template>
+
+	<report 
+        id="report_solicitud_interconsulta_syh"
+        string="Interconsulta"
+        model="solicitud.interconsulta" 
+        report_type="qweb-pdf"
+        file="syh_module.report_solicitud_interconsulta_syh_document" 
+        name="syh_module.report_solicitud_interconsulta_syh_document" 
+        paperformat="syh_module.paperformat_landscape_solicitud_interconsulta"
+    />
+
+</odoo>

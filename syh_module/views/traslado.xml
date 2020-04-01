@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_solicitud_traslado_form" model="ir.ui.view">
+        <field name="name">traslado.form</field>
+        <field name="model">referencia.traslado</field>
+        <field name="arch" type="xml">
+            <form string="" >
+             <header>
+                 <!--   <button class="oe_highlight" string="Validar" type="object" name="validar_estudio" attrs="{'invisible':[('state','!=','draft')]}"/>
+                 <button class="oe_highlight" string="Imprimir Notas De Referencia / Traslado" type="action" name="%(syh_module.report_traslado_syh)d" />-->
+                  <!--  <field name="state" widget="statusbar"/> -->
+                    <field name="state" invisible="1"/>
+                 <!--   <field name="state" widget="statusbar"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group string="Traslado">
+                        <field name="establecimiento_envia"/>
+                        <field name="establecimiento_receptor"/>
+                    </group>
+                    <group string="Resumen Clínico">
+                        <field name="motivo_de_envio"/>
+                        <field name="impresion_diagnostica"/>
+                        <field name="terapeutica_empleada"/>
+                        <field name="store_fname" invisible="1"/>
+                        <field name="unidad_medica"/>
+                        <field name="adjuntar_archivo" attrs="{'readonly':[('state','!=','draft')]}" filename="store_fname"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_solicitud_traslado_tree" model="ir.ui.view">
+        <field name="name">traslado.tree</field>
+        <field name="model">referencia.traslado</field>
+        <field name="arch" type="xml">
+            <tree string="Notas de Referencia / Traslado">
+            	<field name="establecimiento_envia"/>
+              <field name="establecimiento_receptor"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_solicitud_traslado_search" model="ir.ui.view">
+        <field name="name">traslado.search</field>
+        <field name="model">referencia.traslado</field>
+        <field name="arch" type="xml">
+            <search string="Buscar traslado">
+              <field name="establecimiento_envia"/>
+              <field name="establecimiento_receptor"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_solicitud_traslado_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Notas de Referencia / Traslado</field>
+        <field name="res_model">referencia.traslado</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Traslado
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_solicitud_traslado_tree"
+             id="menu_action_solicitud_traslado_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Notas de Referencia / Traslado"
+             sequence="50"
+             />
+
+</odoo>
+

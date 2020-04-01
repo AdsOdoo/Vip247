@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pacientes_form" model="ir.ui.view">
+        <field name="name">pacientes.form</field>
+        <field name="model">pacientes</field>
+        <field name="arch" type="xml">
+            <form string="" >
+                <sheet>
+               <!-- <header>
+                    <button name="expediente_clinico"  class="oe_highlight" style="align:right;" string="Expediente Clinico" type="object"/>
+                </header> -->
+                	<div class="oe_button_box" name="button_box">
+                		<button name="action_view_expediente_clinico"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('expediente_clinico_count', '=', 0)]}">
+                            <field name="expediente_clinico_count" widget="statinfo" string="Expediente clinicos"/>
+                        </button>
+                        <button name="action_view_notas_de_evolucion"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('notas_de_evolucion_count', '=', 0)]}">
+                            <field name="notas_de_evolucion_count" widget="statinfo" string="Notas De Evolucion"/>
+                        </button>
+                        <button name="action_view_citas"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('citas_count', '=', 0)]}">
+                            <field name="citas_count" widget="statinfo" string="Citas"/>
+                        <button name="action_view_recetas"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('recetas_count', '=', 0)]}">
+                            <field name="recetas_count" widget="statinfo" string="Recetas"/>
+                        </button>
+                        <button name="action_view_estudios"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('estudios_count', '=', 0)]}">
+                            <field name="estudios_count" widget="statinfo" string="Solicitud De Estudios"/>
+                        </button>
+                        <button name="action_view_documentos"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('documentos_count', '=', 0)]}">
+                            <field name="documentos_count" widget="statinfo" string="Otros Documentos"/>
+                        </button>
+                        <button name="action_view_interconsulta"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('interconsulta_count', '=', 0)]}">
+                            <field name="interconsulta_count" widget="statinfo" string="Interconsulta"/>
+                        </button>
+                        <button name="action_view_consentimientos"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('consentimiento_count', '=', 0)]}">
+                            <field name="consentimiento_count" widget="statinfo" string="Consentimientos Informados"/>
+                        </button>
+                        <button name="action_view_enfermeria"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('enfermeria_count', '=', 0)]}">
+                            <field name="enfermeria_count" widget="statinfo" string="Hoja de Enfermería"/>
+                        </button>
+                        <button name="action_view_muerte"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('muerte_count', '=', 0)]}">
+                            <field name="muerte_count" widget="statinfo" string="Reporte de Causa Muerte"/>
+                        </button>
+                        <button name="action_view_defuncion"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('defuncion_count', '=', 0)]}">
+                            <field name="defuncion_count" widget="statinfo" string="Notas de Defuncion"/>
+                        </button> <!--
+                        <button name="action_view_traslado"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('traslado_count', '=', 0)]}">
+                            <field name="traslado_count" widget="statinfo" string="Nota de Referencia / Traslado"/>
+                        </button> -->
+                      </button>
+                	</div>
+                	
+                	<group cols="4" string="DATOS DEL PACIENTE">
+                               <group>
+                                  <field name="dias" invisible="1"/>
+                                  <field name="meses" invisible="1"/>
+                                  
+                                  <field name="apellido_paterno"/>
+                                  <field name="nombre_completo" invisible="1" />
+                                  <field name="apellido_materno"/>
+                                  <field name="nombres"/>
+                                  <field name="genero" string="Género"/>
+                                  <field name="edad"/>
+                                  <field name="nota_dias" string="Días" attrs="{'invisible':[('dias','!=', True)]}" />
+                                  <field name="nota_meses" string="Meses" attrs="{'invisible':[('meses','!=', True)]}" />
+                                  <field name="lugar_origen" />
+                                  <field name="lugar_residencia" />
+                                  <field name="fecha_nacimiento"/>
+                                  <field name="estado_civil" string="Estado Civil" />
+                                  <field name="ocupacion_actual"/>
+                               </group>
+                               <group>
+                                  <field name="escolaridad" />
+                                  <field name="religion" string="Religión" />
+                                  <field name="nota_religion" string=" " attrs="{'invisible':[('religion','!=', '06')]}"/>
+                                  <field name="grupo_etnico" string="Grupo Étnico" />
+                                  <field name="nota_grupo_etnico" string=" " attrs="{'invisible':[('grupo_etnico','!=', '05')]}"/>
+                                  <field name="familiar_responsable" string="Familiar Responsable" />
+                                  <field name="parentesco" string="Parentesco" />
+                                  <field name="nota_parentesco" string=" " attrs="{'invisible':[('parentesco','!=', '07')]}"/>
+                                  <field name="tipo_interrogatorio" string="Tipo Interrogatorio"/>
+                                  <field name="domicilio_actual" />
+                                  <field name="telefono" />
+                                  <field name="correo_electronico"/>
+                                  <field name="unidad_medica" string="Unidad Médica"/>
+                                  <field name="partner_id"/>
+                               </group>
+                            </group>
+                    <footer invisible="not context.get('is_new_popup')">
+                		<button class="oe_highlight" string="Save" type="object" name="save_paciente_paciente" />
+                      	<button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>                	
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_pacientes_tree" model="ir.ui.view">
+        <field name="name">pacientes.tree</field>
+        <field name="model">pacientes</field>
+        <field name="arch" type="xml">
+            <tree string="Pacientes">
+            	<field name="nombres"/>
+              <field name="apellido_paterno"/>
+              <field name="apellido_materno"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_pacientes_search" model="ir.ui.view">
+        <field name="name">pacientes.search</field>
+        <field name="model">pacientes</field>
+        <field name="arch" type="xml">
+            <search string="Search Operating Unit">
+               <field name="nombres"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pacientes_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Pacientes</field>
+        <field name="res_model">pacientes</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Pacientes.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_pacientes_tree"
+             id="menu_action_pacientes_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Pacientes - Ficha De Identificación"
+             sequence="10"
+             />
+
+</odoo>
+

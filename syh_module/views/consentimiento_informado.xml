@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_consentimiento_form" model="ir.ui.view">
+        <field name="name">consentimiento.informado.form</field>
+        <field name="model">consentimiento.informado</field>
+        <field name="arch" type="xml">
+            <form string="" >
+                <header>
+                    <!--<button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/>-->
+                   
+                    <!--BUTTONS FOR REPORTS SYH-->
+                    
+                    <button class="oe_highlight" string="Imprimir Consentimiento Informado" type="action" name="%(syh_module.report_coni_syh)d" attrs="{'invisible':['|',('tipo_consentimiento_syh','!=','consentimiento'),('unidad_medica', '==', '01')]}"/>
+
+
+                    <button class="oe_highlight" string="Imprimir Consentimiento Informado RCP" type="action" name="%(syh_module.report_circp_syh)d" attrs="{'invisible':['|',('tipo_consentimiento_syh','!=','consentimiento_rcp'),('unidad_medica', '==', '01')]}"/>
+
+                    <!--BUTTON FOR SOMNOX REPORT-->
+                    <button class="oe_highlight" string="Imprimir Consentimiento Informado" type="action" name="%(syh_module.report_coni_somnox)d" attrs="{'invisible':[('unidad_medica','!=', '01')],'required':[('tipo_consentimiento_somnox','!=','consentimiento')]}"/>
+
+                    <!--<field name="state" widget="statusbar"/>-->
+                    <field name="state" invisible="1"/>
+                </header>
+            
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group cols="4" string="Datos del paciente">
+                        <field name="paciente" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                        <field name="unidad_medica" string="Unidad Médica" force_save="1"/>
+                        <field name="fecha" attrs="{'readonly':[('state','!=','draft')]}"/> 
+                        <field name="lugar" attrs="{'readonly':[('state','!=','draft')],'invisible':[('unidad_medica','!=','02')]}"/> 
+                        <field name="tecnico_somnox" attrs="{'readonly':[('state','!=','draft')],'invisible':[('unidad_medica','!=','01')]}" /> 
+                        <field name="tipo_consentimiento_syh" string="Tipo Consentimiento" attrs="{'invisible':[('unidad_medica','!=','02')]}" />
+                        <field name="tipo_consentimiento_somnox" string="Tipo Consentimiento" attrs="{'invisible':[('unidad_medica','!=','01')]}" />
+                        <field name="indicaciones_emergencia" attrs="{'invisible':[('tipo_consentimiento_syh','!=','consentimiento_rcp')]}" />
+                    </group>
+                    
+                <group cols="4" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('tipo_consentimiento_syh', '!=', 'consentimiento_rcp'),('unidad_medica', '==', '01')]} ">
+                    <group  string="Consentimiento Informado RCP" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]} ">
+                        <!--BOOLEANS IF CONSENTIMIENTO INFORMADO RCP-->
+                        <field name="si_acepto_rcp" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]}"/>
+                        <field name="no_acepto_rcp" attrs="{'readonly':[('state','!=','draft')]}"/>   
+                    </group>
+                    <group string="¿Quién acepta el consentimiento?" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]} ">
+                        <field name="bool_paciente_rcp" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]}"/>
+                        <field name="bool_familiar_responsable_rcp" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]}"/>
+                        <field name="bool_cuidador_rcp" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]}"/>
+                        <field name="bool_representante_legal_rcp" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento_rcp')]}"/>
+                    </group>   
+                </group>
+                    
+                <group cols="4" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('tipo_consentimiento_syh', '!=', 'consentimiento'),('unidad_medica', '==', '01')]} ">
+                    <group string="Consentimiento Informado" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]} ">
+                        <!--BOOLEANS IF CONSENTIMIENTO INFORMADO RCP-->
+                        <field name="si_acepto_ci" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                        <field name="no_acepto_ci" attrs="{'readonly':[('state','!=','draft')],'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                    </group>
+                    <group string="¿Quién acepta el consentimiento?" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]} ">
+                        <field name="bool_paciente_ci" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                        <field name="bool_familiar_responsable_ci" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                        <field name="bool_cuidador_ci" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                        <field name="bool_representante_legal_ci" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('tipo_consentimiento_syh', '!=', 'consentimiento')]}"/>
+                    </group>
+                </group>
+
+
+                    
+                    
+                </sheet>
+
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_consentimiento_tree" model="ir.ui.view">
+        <field name="name">consentimiento.informado.tree</field>
+        <field name="model">consentimiento.informado</field>
+        <field name="arch" type="xml">
+            <tree string="Consentimiento informado">
+                <field name="nombre_completo"/>
+                <field name="tipo_consentimiento_syh" string="Tipo De Consentimiento SyH"/>
+                <field name="tipo_consentimiento_somnox" string="Tipo De Consentimiento SOMNOX"/>
+                <field name="unidad_medica"/>
+                <field name="fecha"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_consentimiento_search" model="ir.ui.view">
+        <field name="name">consentimiento.informado.search</field>
+        <field name="model">consentimiento.informado</field>
+        <field name="arch" type="xml">
+            <search string="Consentimiento informado">
+               <!--<field name="nombres"/>-->
+                <field name="unidad_medica"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_consentimientos_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Consentimientos Informados</field>
+        <field name="res_model">consentimiento.informado</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Consentimiento Informado.
+          </p>
+        </field>
+                <!-- <field name="unidad_medica"/> -->
+
+    </record>
+
+   <menuitem action="action_consentimientos_tree"
+             id="menu_action_consentimientos_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Consentimientos Informados"
+             sequence="70"
+             />
+    
+
+
+</odoo>
+
