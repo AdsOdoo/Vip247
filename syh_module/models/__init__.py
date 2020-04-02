@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#from . import res_partner
+from . import res_partner
 from . import expediente_clinico
 from . import pacientes
 from . import notas_de_evolucion
