@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_formatos_form" model="ir.ui.view">
+        <field name="name">varios.formatos.form</field>
+        <field name="model">varios.formatos</field>
+        <field name="arch" type="xml">
+            <form string="" >
+                <header>
+                    <!--<button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/> -->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="descripcion" />
+                    </group>
+                          <group string="DOCUMENTOS">
+                                <field name="archivos_adjuntos_ids" nolabel="1" colspan="4">
+                                    <tree name ="adjuntos" string="Archivos adjuntos">
+                                        <field name="description" />
+                                        <field name="doc_name" readonly="0" invisible="1"/>
+                                        <field name="documento" filename="doc_name"/>
+                                    </tree>
+                                    <form string="Documentos">
+                                        <group colspan="4">
+                                           <field name="description" />
+                                           <field name="doc_name" readonly="0" invisible="1"/>
+                                           <field name="documento" filename="doc_name"/>
+                                        </group>
+                                    </form>
+                                </field>
+                          </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_formatos_tree" model="ir.ui.view">
+        <field name="name">varios.formatos.tree</field>
+        <field name="model">varios.formatos</field>
+        <field name="arch" type="xml">
+            <tree string="Formatos">
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_formatos_search" model="ir.ui.view">
+        <field name="name">varios.formatos</field>
+        <field name="model">varios.formatos</field>
+        <field name="arch" type="xml">
+            <search string="Formatos">
+               <!--<field name="nombres"/>-->
+                <field name="descripcion"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_formatos_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Formatos</field>
+        <field name="res_model">varios.formatos</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para agregar Formatos.
+          </p>
+        </field>
+                <!-- <field name="unidad_medica"/> -->
+    </record>
+
+   <menuitem action="action_formatos_tree"
+             id="menu_action_formatos_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Formatos"
+             sequence="130"
+             />
+
+</odoo>
+

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+		<record id="seq_expediente_medico" model="ir.sequence">
+            <field name="name">Expediente Clínico</field>
+            <field name="code">expediente.clinico</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+		<record id="seq_notas_de_evolucion" model="ir.sequence">
+            <field name="name">Notas De Evolución</field>
+            <field name="code">notas.de.evolucion</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+		<record id="seq_consentimientos" model="ir.sequence">
+            <field name="name">Consentimientos Informados</field>
+            <field name="code">consentimiento.informado</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_citas" model="ir.sequence">
+            <field name="name">Citas</field>
+            <field name="code">citas.salud</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_recetas" model="ir.sequence">
+            <field name="name">Recetas</field>
+            <field name="code">recetas.medicas</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_estudios" model="ir.sequence">
+            <field name="name">Solicitud Estudios</field>
+            <field name="code">solicitud.estudios</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_otrosdoc" model="ir.sequence">
+            <field name="name">Otros Documentos</field>
+            <field name="code">otros.documentos</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_formatos" model="ir.sequence">
+            <field name="name">Formatos</field>
+            <field name="code">varios.formatos</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_interconsulta" model="ir.sequence">
+            <field name="name">Interconsulta</field>
+            <field name="code">solicitud.interconsulta</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_traslados" model="ir.sequence">
+            <field name="name">Traslado</field>
+            <field name="code">traslado</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_muerte" model="ir.sequence">
+            <field name="name">Causa muerte</field>
+            <field name="code">causamuerte</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_defuncion" model="ir.sequence">
+            <field name="name">Nota de defuncion</field>
+            <field name="code">notadefuncion</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="seq_enfermeria" model="ir.sequence">
+            <field name="name">Hoja de Enferferia</field>
+            <field name="code">hoja.enfermeria</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

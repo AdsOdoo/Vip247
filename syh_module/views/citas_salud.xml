@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_citas_form" model="ir.ui.view">
+        <field name="name">citas.salud.form</field>
+        <field name="model">citas.salud</field>
+        <field name="arch" type="xml">
+            <form string="" >
+                <header>
+                    <button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group cols="4" string="Datos del paciente">
+                        <field name="paciente" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                        <field name="unidad_medica" string="Unidad Médica" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fecha" attrs="{'readonly':[('state','!=','draft')]}" />
+                        <field name="hora" attrs="{'readonly':[('state','!=','draft')]}"  widget="float_time"/>
+                        <field name="doctor" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                    </group>
+                    <footer invisible="not context.get('is_new_popup')">
+                		<button class="oe_highlight" string="Save" type="object" name="save_cita_deseguimiento_citas" />
+                      	<button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_citas_tree" model="ir.ui.view">
+        <field name="name">citas.salud.tree</field>
+        <field name="model">citas.salud</field>
+        <field name="arch" type="xml">
+            <tree string="Citas">
+                <field name="nombre_completo"/>
+                <field name="unidad_medica"/>
+                <field name="fecha"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_citas_search" model="ir.ui.view">
+        <field name="name">citas.salud.search</field>
+        <field name="model">citas.salud</field>
+        <field name="arch" type="xml">
+            <search string="Cita">
+               <!--<field name="nombres"/>-->
+                <field name="unidad_medica"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_citas_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Citas</field>
+        <field name="res_model">citas.salud</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Citas.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_citas_tree"
+             id="menu_action_citas_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Citas"
+             sequence="140"
+             />
+
+</odoo>
+

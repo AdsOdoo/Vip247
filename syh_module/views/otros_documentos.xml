@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_documentos_form" model="ir.ui.view">
+        <field name="name">otros.documentos.form</field>
+        <field name="model">otros.documentos</field>
+        <field name="arch" type="xml">
+            <form string="" >
+                <header>
+                    <!--<button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/> -->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group cols="4" string="Datos del documento">
+                        <field name="paciente" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':True}"/>
+                        <field name="unidad_medica" string="Unidad Médica" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="fecha" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="description" attrs="{'readonly':[('state','!=','draft')]}" />
+                        <field name="store_fname" invisible="1"/>
+                        <field name="documento" attrs="{'readonly':[('state','!=','draft')]}" filename="store_fname"/>
+                    </group>
+                    <footer invisible="not context.get('is_new_popup')">
+                		<button class="oe_highlight" string="Save" type="object" name="save_cita_deseguimiento_citas" />
+                      	<button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_documentos_tree" model="ir.ui.view">
+        <field name="name">otros.documentos.tree</field>
+        <field name="model">otros.documentos</field>
+        <field name="arch" type="xml">
+            <tree string="Otros Documentos">
+                <field name="nombre_completo"/>
+                <field name="description"/>
+                <field name="fecha"/>
+                <field name="unidad_medica" string="Unidad Médica"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_documentos_search" model="ir.ui.view">
+        <field name="name">otros.documentos.search</field>
+        <field name="model">otros.documentos</field>
+        <field name="arch" type="xml">
+            <search string="Otros Documentos">
+               <!--<field name="nombres"/>-->
+                <field name="unidad_medica"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_documentos_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Otros Documentos</field>
+        <field name="res_model">otros.documentos</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para agregar Otros Documentos.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_documentos_tree"
+             id="menu_action_documentos_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Otros Documentos"
+             sequence="120"
+             />
+
+</odoo>
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<menuitem id="menu_root_saludyhogar"
+             name="Expediente Electrónico"
+             web_icon="syh_module,static/src/img/icon2.png"
+             sequence="20" groups="syh_module.group_syh_module_user"/>
+   <menuitem id="menu_root_second_saludyhogar"
+             name="Expediente Electrónico"
+             parent="syh_module.menu_root_saludyhogar"
+             sequence="10"
+             />
+</odoo>

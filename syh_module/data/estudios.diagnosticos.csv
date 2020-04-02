@@ -1,0 +1,36 @@
+id,codigo_ed
+estudios_diagnosticos_01,BH
+estudios_diagnosticos_02,QS
+estudios_diagnosticos_03,ES
+estudios_diagnosticos_04,EGO
+estudios_diagnosticos_05,UROCULTIVO
+estudios_diagnosticos_06,TIEMPOS DE COAGULACIÓN
+estudios_diagnosticos_07,HBA1C
+estudios_diagnosticos_08,PERFIL HEPÁTICO
+estudios_diagnosticos_09,PERFIL LÍPIDO
+estudios_diagnosticos_10,PERFIL TIROIDEO
+estudios_diagnosticos_11,COPROCULTIVO
+estudios_diagnosticos_12,COPROPARASITOSCÓPICO
+estudios_diagnosticos_13,PROCALCITONINA
+estudios_diagnosticos_14,VSG
+estudios_diagnosticos_15,REACCIONES FEBRILES
+estudios_diagnosticos_16,Ag-DENGUE
+estudios_diagnosticos_17,DHL
+estudios_diagnosticos_18,TROPONINAS
+estudios_diagnosticos_19,RX TÓRAX
+estudios_diagnosticos_20,TAC TÓRAX
+estudios_diagnosticos_21,RX ABDOMINAL
+estudios_diagnosticos_22,TAC ABDOMINAL
+estudios_diagnosticos_23,USG ABDOMINAL
+estudios_diagnosticos_24,USG OBSTÉTRICO
+estudios_diagnosticos_25,USG GINECOLÓGICO
+estudios_diagnosticos_26,USG CARDIÁCO
+estudios_diagnosticos_27,TAC CRÁNEO
+estudios_diagnosticos_28,POLISOMNOGRAFÍA
+estudios_diagnosticos_29,POLIGRAFÍA RESPIRATORIA SIN TITULACIÓN
+estudios_diagnosticos_30,POLIGRAFÍA RESPIRATORIA CON TITULACIÓN
+estudios_diagnosticos_31,POLIGRAFÍA RESPIRATORIA CANADÁ
+estudios_diagnosticos_32,ESPIROMETRIA SIN BRONCODILATADOR
+estudios_diagnosticos_33,ESPIROMETRÍA CON BRONCODILATADOR
+estudios_diagnosticos_34,DLco
+estudios_diagnosticos_35,OTROS

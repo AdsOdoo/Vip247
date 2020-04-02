@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_landscape_solicitud_servicio" model="report.paperformat">
+        <field name="name">A4 Landscape Payslip Batch</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">9</field>
+        <field name="dpi">110</field>
+    </record>
+	
+    <template id="report_soliservicio_syh_document">
+    	<t t-call="web.html_container">
+			<div class="header">
+	            <div class="col-xs-6 float-left" style="text-align:right;font-size:20px;padding-left:70px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+							<img src="/syh_module/static/src/img/logo01.png" style="max-height: 150px;max-width:150px;"/>
+						</t>
+	                    <t t-if="docs.unidad_medica == '02'">
+							<img src="/syh_module/static/src/img/logo02.jpg" style="max-height: 150px;max-width:150px;"/>	                    </t>
+	            </div>
+
+	        
+	           <div class="col-xs-6 float-right" style="text-align:right;font-size:20px;padding-right:100px;padding-top:70px;">
+	                    <t t-if="docs.unidad_medica == '01'">
+	                        <strong style="font-size:25px;">Clínica para Trastornos del Dormir</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    <t t-if="docs.unidad_medica == '02'">
+	                        <strong style="font-size:25px;">SALUD Y HOGAR EXPRESS</strong><br/>
+	                        <span style="font-size:13px;">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 </span> <br/>
+	                        <span style="font-size:13px;">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</span><br/>
+	                    </t>
+	                    </div>
+	            </div>
+	            <br/>
+	            <br/>
+
+	    	<!--FOOTER-->
+	        <div class="footer">
+	          <div class="text-center" style="border-top: 1px solid black;">
+	                        <t t-if="docs.unidad_medica == '01'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 3152 5013 e-mail: somnox@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	                        <t t-if="docs.unidad_medica == '02'">
+	                         <div class="text-center" style="font-size:16px;">
+	                            <div class="float-center">Citas al: 33 1454 5208 / WhatsApp. 33 2288 0849 e-mail: syhexpress@saludyhogar.mx</div>
+	                            <div class="center">Av. Juan Palomar  y Arias 420, Monraz, 44680 Guadalajara Jalisco</div>
+	                         </div>
+	                        </t>
+	          </div>
+	        </div>
+
+	        <div class="article o_report_layout_standard">
+			
+				<div class="page">
+					<div class="oe_structure" />
+						<div style="font-size:25px;padding-top:220px;" >
+
+						<center> <span style="font-weight:bold;font-size:25px;">SOLICITUD DE SERVICIO EXPRESS</span> </center>
+
+						<div style="width:100%;font-size:14px;">
+	                            <table class="table table-borderless" style="width=100%;">
+	                                <tr>
+	                                    <td colspan="3" style="border:1px solid black;">
+	                                        Paciente: <span t-esc="docs.paciente.nombre_completo" />
+	                                    </td>
+	                                    <td>Fecha:<span t-field="docs.fecha"/></td>
+	                                </tr>
+	                                <tr>
+	                                    <td colspan="2" style="border:1px solid black;"> 
+	                                        Domicilio: <span t-field="docs.domicilio_actual"/>
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Sexo: <span t-field="docs.genero"/>
+	                                    </td>
+	
+	                                    <td style="border:1px solid black;">
+	                                        Edad:  <span t-field="docs.edad"/>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="border:1px solid black;">
+	                                        Alergias:    Si__ No__
+	                                    </td>
+	
+	                                    <td colspan="3" style="border:1px solid black;">Especifique</td>
+	
+	                                </tr>
+	                                <tr>
+	                                    <td colspan="2" style="border:1px solid black;">
+	                                        Médico tratante:
+	                                    </td>
+	                                    <td colspan="2" style="border:1px solid black;">Especialidad:</td>
+	                                </tr>
+	                                <tr>
+	                                    <td colspan="2" style="border:1px solid black;">
+	                                        Teléfono:
+	                                    </td>
+	                                    <td colspan="2" style="border:1px solid black;">e-mail:</td>
+	                                </tr>
+	                                <tr>
+	                                    <td colspan="2" style="border:1px solid black;">
+	                                        Familiar responsable:
+	                                    </td>
+	                                    <td colspan="2" style="border:1px solid black;">e-mail:</td>
+	                                </tr>
+	                                <tr>
+	                                    <td colspan="2" style="border:1px solid black;">
+	                                        Teléfono:
+	                                    </td>
+	                                    <td colspan="2" style="border:1px solid black;">Parentesco:</td>
+	                                </tr>
+	                            </table>
+	
+	                            <table class="table table-borderless" style="width=100%;">
+	                                <tr>
+	                                    <td style="border:1px solid black;">
+	                                        Motivo de Consulta:
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="border:1px solid black;">
+	                                        Impresión Diagnóstica:
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="border:1px solid black;">Indicaciones Médicas:</td>
+	                                </tr>
+	                                <tr><td style="border:1px solid black;"><br/></td></tr>
+	                                <tr><td style="border:1px solid black;"><br/></td></tr>
+	                                <tr><td style="border:1px solid black;"><br/></td></tr>
+	
+	                            </table>
+	
+	
+	                            <table class="table table-bordered" style="width:100%;border:1px solid black;">
+	                            <tr><td colspan="7" style="text-align:center;border:1px solid black;">SIGNOS VITALES</td></tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Párametro
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Horario
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Resultado
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Horario
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Resultado
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Horario
+	                                    </td>
+	                                    <td style="border:1px solid black;">
+	                                        Resultado
+	                                    </td>
+	                                </tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Tensión Arterial
+	                                    </td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                </tr>
+	                                <tr style="border:1px solid black;" >
+	                                    <td style="border:1px solid black;">
+	                                        Frecuencia Cardiaca
+	                                    </td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                    <td style="border:1px solid black;" ></td>
+	                                </tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Frecuencia Respiratoria
+	                                    </td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                </tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Temperatura
+	                                    </td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                </tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Oximetría pulso
+	                                    </td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                </tr>
+	                                <tr style="border:1px solid black;">
+	                                    <td style="border:1px solid black;">
+	                                        Glicemia
+	                                    </td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                    <td style="border:1px solid black;"></td>
+	                                </tr>
+	                                
+	                            </table>
+	
+							<p style="page-break-before:always;"> </p>
+						<div style="padding-top:170px;font-size:25px;">
+
+	                        <table class="table table-borderless" style="width:100%;">
+	                            <tr><td colspan="4" style="text-align:center;">SOLICITUD DE SERVICIO</td></tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Canalización
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Admon. Medicamentos
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Colocación/retiro
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Colocación/retino
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Sonda Urinaria
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Sonda Nasogástrica
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Curación De Heridad
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Tomas De Laboratoriales
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Aspiración De Secreciones
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Reposición De Liquidos
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Nebulización
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Soporte de oxígeno
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Traslado En Ambulancia
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Consulta Médica
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                        </table>
+
+	                    </div>
+	
+	
+	                        <p style="page-break-before:always;"> </p>
+	                    <div style="padding-top:170px;font-size:25px;">
+	                        <table class="table table-borderless" style="width:100%;">
+	                            <tr><td colspan="4" style="text-align:center;">LABORATORIALES</td></tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Biometría Hemática (BH)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Electrolitos 6 (ES6)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Química Sanguínea (QS)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Examen General de Orina (EGO)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Coprológico
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Coproparasitoscópico (1M)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Perfil Heṕático (PFH)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Perfil Tiroideo (PT)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Gasometría Arterial (GA)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Electrolitos 3 (ES3)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Tiempos de coagulación (TP/TPT)
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Urocultivo
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td style="width:25%;text-align:center;">
+	                                    Procalcitonina
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    ___
+	                                </td>
+	                                <td style="width:25%;text-align:center;">
+	                                    Otros:
+	                                </td>
+	                                <td style="width:25%;text-align:left;">
+	                                    _________________
+	                                </td>
+	                            </tr>
+	                        </table>                    
+	                    </div>
+	                    
+	                    </div>
+
+	                <p style="page-break-before:always;"> </p>
+
+					<div style="font-size:20px;padding-top:150px;">
+	                    <h3>ENCUESTA DE CALIDAD</h3>
+	                    Califica el servicio de calidad del personal de enfermería, desde muy malo(1) 
+	                    a excelente(5)
+	                    <table class="table table-bordered" style="width:100%;border:1px solid black;">
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                SERVICIO SALUD Y HOGAR EXPRESS / ESCALA DE LA RESPUESTA:
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">
+	                                MUY MAL (MM)
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">
+	                                MALA (M)
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">
+	                                REGULAR (R)
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">
+	                                BUENA (B)
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">
+	                                EXCELENTE (E)
+	                            </td>
+	                        </tr><!--
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                SERVICIO SALUD Y HOGAR EXPRESS:
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>-->
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                ¿CÓMO CLASIFICAR EL PRIMER CONTACTO VÍA TELEFÓNICA?
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                ¿CÓMO FUE EL TRATO DEL PERSONAL DE ENFERMERÍA?
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                ¿CÓMO CLASIFICAR EL TIEMPO DE LLEGADA A SU DOMICILIO?
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                CALIFIQUE LA CALIDAD Y COMPETENCIA DEL SERVICIO DE ENFERMERIA
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                ¿CÓMO CLASIFICA LA PRESENTACIÓN DEL PERSONAL DE ENFERMERÍA?
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;">1</td>
+	                            <td style="text-align:center;border:1px solid black;">2</td>
+	                            <td style="text-align:center;border:1px solid black;">3</td>
+	                            <td style="text-align:center;border:1px solid black;">4</td>
+	                            <td style="text-align:center;border:1px solid black;">5</td>
+	                        </tr>
+	                        <tr style="border:1px solid black;">
+	                            <td colspan="4" style="border:1px solid black;">
+	                                TOTALES:
+	                            </td>
+	                            <td style="text-align:center;border:1px solid black;"></td>
+	                            <td style="text-align:center;border:1px solid black;"></td>
+	                            <td style="text-align:center;border:1px solid black;"></td>
+	                            <td style="text-align:center;border:1px solid black;"></td>
+	                            <td style="text-align:center;border:1px solid black;"></td>
+	                        </tr>
+	
+	                    </table>
+	                </div>
+	                <div style="font-size:20px;">
+	                    <table class="borderless" style="width:100%;font-size 23px;border:none;">
+	                        <tr style="border:none;">
+	                            <td class="col-xs-6" style="text-align:center;border:none;font-size 20px;">
+	                                Costo Total del Servicio $: __________ <br/>
+	                            </td>
+	                            <td class="col-xs-6" style="text-align:center;border:none;font-size 20px;">
+	                                Hora Estimada de llegada: __________ <br/>
+	                            </td>
+	                        </tr>
+	                        <tr style="border:none;">
+	                            <td class="col-xs-6" style="text-align:center;border:none;font-size 20px;">
+	                                Hora de llegada: $: __________ <br/>
+	                            </td>
+	                            <td class="col-xs-6" style="text-align:center;border:none;font-size 20px;">
+	                                Hora de término de servicio : __________ <br/>
+	                            </td>
+	                        </tr>
+	                    </table>
+	                </div>	
+
+
+	                <br/>
+	                <br/>
+	                <br/>
+
+
+	                <div class="col-xs-6 float-left">
+	                	<span style="border-top:1px solid black;padding-left:100px;">
+	                		Firma familiar responsable
+	                	</span>
+	                </div> 
+	                <div class="col-xs-6 float-right">
+	                	<span style="border-top:1px solid black;padding-right:100px;">
+	                		Firma del Enfemero
+	                	</span>
+	                </div>
+
+	                <br/>
+
+	                <br/>
+
+	                <center> <span style="font-size:25px;border-top:1px solid black;">Firma del Médico</span> </center>
+
+
+	
+	                   
+
+	
+	                <div style="padding-top:70px;font-size:25px;">
+	                    <table style="width:100%;font-size 25px;padding-top:50px;">
+	                        <tr>
+	                            <td class="col-4"></td>
+	                            <td class="col-4" style="border-top:1px solid black;text-align:center;font-size 25px;">
+	                                Firma del médico
+	                            </td>
+	                            <td class="col-4"></td>
+	                            
+	                        </tr>
+	                    </table>
+	                </div>
+
+
+	             
+	                		
+
+	           
+	
+	                
+
+											
+										
+						</div>
+				</div>
+			</div>
+	    	
+			
+			
+	  </t>
+	</template>
+
+	<report 
+        id="report_soliservicio_syh"
+        string="Hoja de Enfermería"
+        model="hoja.enfermeria" 
+        report_type="qweb-pdf"
+        file="syh_module.report_soliservicio_syh_document" 
+        name="syh_module.report_soliservicio_syh_document" 
+        paperformat="syh_module.paperformat_landscape_solicitud_servicio"
+    />
+
+</odoo>

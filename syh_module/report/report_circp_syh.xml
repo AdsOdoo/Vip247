@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="report_circp_syh_document">
+   		<t t-call="web.html_container">
+			<div class="header">
+	                <div class="col-xs-6 float-left">
+	                	<img t-att-src="'/syh_module/static/src/img/logo02.jpg'" style="max-height: 150px;max-width:200px;"/>
+	                </div>
+	                <div class="col-xs-6 float-right" style="padding-left:270px;text-align:left">
+	                    <strong>Dirección: </strong>Juan Palomar y Arias #420<br/>
+	                    <strong>Col. </strong>Monraz C.P. 44680<br/>
+	                    <span> Guadalajara, Jalisco </span><br/>
+	                    <strong>Correo electrónico: </strong>syhexpress@saludyhogar.mx<br/>
+	                    <strong>Tel. </strong>3314545208
+	                </div>
+	    	</div>
+	
+	    	<div class="article o_report_layout_standard">
+			
+				<div class="page" style="padding-top:0px;">
+					<div class="oe_structure" />									
+											
+	<div style="text-align:right;"><span style="padding:left:200px;"><strong>Lugar:</strong> <span t-field="docs.lugar"/></span>​  <span style="padding-right:0px;"><strong>Fecha:​</strong> <span t-field="docs.fecha"/></span></div>
+	
+	<strong>CONSENTIMIENTO INFORMADO DE NO REANIMACIÓN CARDIOPULMONAR PARA PACIENTE:</strong> <br/><br/>
+	<span t-field="docs.paciente.apellido_paterno"/> <span t-field="docs.paciente.apellido_materno"/> <span t-field="docs.paciente.nombres"/> <br/><br/>
+	<strong>¿Qué es la reanimación?</strong><br/><br/>
+	
+	La RCP es el tratamiento que el paciente recibe cuando la circulación o la respiración se detienen. Si se
+	inicia RCP, el personal clínico realizará fuertes compresiones en el tórax para restablecer la función del
+	corazón. Se darán respiraciones de manera artificial para forzar la entrada de aire a los pulmones, y de
+	ser necesario una descarga eléctrica en el pecho para tratar de que el corazón vuelva a latir. <br/> <br/>
+	
+	<strong>Beneficios:</strong> La RCP puede salvar la vida de una persona que está sana pero que ha sido gravemente
+	herida o que ha sufrido de un paro cardio-respiratorio.<br/> <br/>
+	
+	<strong>Riesgos y complicaciones:</strong> Para realizar una RCP exitosa el tórax se tiene que presionar a fondo
+	aproximadamente 100 veces en un minuto y por varios minutos. Este tipo de presión puede romper las
+	costillas o dañar órganos internos. Muchas personas que sobreviven un RCP requieren del uso de una
+	máquina para respiración artificial que los ayuda a respirar hasta que se sientan mejor y puedan realizar
+	este proceso por sí mismos.<br/><br/>
+	
+	<strong>AUTORIZACIÓN DE PACIENTE, FAMILIAR, CUIDADOR O REPRESENTANTE LEGAL</strong> ​ Yo, en pleno uso de
+	mis facultades mentales tengo la capacidad de tomar una decisión informada y continuación especifico
+	mi autorización sobre la realización de <strong>medidas de reanimación en caso de sufrir un paro
+	respiratorio o cardíaco​</strong>. Por consiguiente, indico al personal de Enfermería seguir la indicaciones
+	descritas en el espacio inferior del consentimiento. <br/> <br/>
+	
+	
+	<div style="border:1px solid black; height:150px;">
+	<strong>Indicaciones en caso de emergencia médica:</strong> <span t-field="docs.indicaciones_emergencia"/> 
+	</div>
+	<br/>
+	<p>
+	<t t-if="not docs.no_acepto_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.no_acepto_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> No acepto el procedimiento de RCP, bajo mi responsabilidad   
+	 
+	
+	<t t-if="not docs.si_acepto_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.si_acepto_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Acepto procedimiento RCP </p>
+	
+	
+	
+	
+	 <p>Nombre y firma: ______________________________________________________________________________</p>
+	
+	 <p><t t-if="not docs.bool_paciente_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_paciente_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t>    Paciente    
+	
+	
+	<t t-if="not docs.bool_familiar_responsable_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_familiar_responsable_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t>     Familiar Responsable    
+	
+	<t t-if="not docs.bool_cuidador_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_cuidador_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Cuidador    
+	
+	<t t-if="not docs.bool_representante_legal_rcp == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_representante_legal_rcp == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Representante legal</p>
+	
+	
+							
+							</div>
+						</div>
+					</t>
+	</template>
+
+	<report 
+        id="report_circp_syh"
+        string="Reporte Consentimiento Informado"
+        model="consentimiento.informado" 
+        report_type="qweb-pdf"
+        file="syh_module.report_circp_syh_document" 
+        name="syh_module.report_circp_syh_document" 
+        menu="False"
+        
+    />
+
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_solicitud_estudio_form" model="ir.ui.view">
+        <field name="name">solicitud.estudio.form</field>
+        <field name="model">solicitud.estudio</field>
+        <field name="arch" type="xml">
+            <form string="" >
+             <header>
+                 <!--   <button class="oe_highlight" string="Validar" type="object" name="validar_estudio" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <button class="oe_highlight" string="Imprimir Solicitud" type="action" name="%(syh_module.report_solicitud_estudio_syh)d" />-->
+                  <!--  <field name="state" widget="statusbar"/> -->
+                    <field name="state" invisible="1"/>
+                 <!--   <field name="state" widget="statusbar"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                	<group string="Solicitud de estudio">
+                <field name="paciente" string="Paciente"/>
+                <field name="domicilio" string="Domicilio"/>
+                <field name="fecha" string="Fecha"/>
+                <field name="text_solicitud" string="Solicitud De Estudio"/>
+                <field name="unidad_medica" string="Unidad Médica"/>
+						</group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_solicitud_estudio_tree" model="ir.ui.view">
+        <field name="name">solicitud.estudio.tree</field>
+        <field name="model">solicitud.estudio</field>
+        <field name="arch" type="xml">
+            <tree string="Solicitud de Estudio">
+            	<field name="paciente"/>
+               <field name="fecha"/>
+                <field name="unidad_medica"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_solicitud_estudio_search" model="ir.ui.view">
+        <field name="name">solicitud.estudio.search</field>
+        <field name="model">solicitud.estudio</field>
+        <field name="arch" type="xml">
+            <search string="Buscar solicitud de Estudio">
+               <field name="paciente"/>
+               <field name="fecha"/>
+                <field name="unidad_medica"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_solicitud_estudio_tree" model="ir.actions.act_window">
+        <field name="name">Salud y Hogar - Solicitudes De Estudio</field>
+        <field name="res_model">solicitud.estudio</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Clic para crear Solicitudes De Estudio.
+          </p>
+        </field>
+    </record>
+
+   <menuitem action="action_solicitud_estudio_tree"
+             id="menu_action_solicitud_estudio_tree"
+             parent="syh_module.menu_root_second_saludyhogar"
+             name="Solicitudes De Estudio"
+             sequence="110"
+             />
+
+</odoo>
+

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <template id="report_coni_syh_document">
+   		<t t-call="web.html_container">
+	        <div class="header">
+	                <div class="col-xs-6 float-left">
+	                    <img t-att-src="'/syh_module/static/src/img/logo02.jpg'" style="max-height: 150px;max-width:200px;"/>
+	                </div>
+	                <div class="col-xs- float-right" style="padding-left:270px;text-align:left">
+	                    <strong>Dirección: </strong>Juan Palomar y Arias #420<br/>
+	                    <strong>Col. </strong>Monraz C.P. 44870<br/>
+	                    <span> Guadalajara, Jalisco </span><br/>
+	                    <strong>Correo electrónico: </strong>syhexpress@saludyhogar.mx<br/>
+	                    <strong>Tel. </strong>3314545208
+	                </div>
+	        </div>
+	
+	        <div class="article o_report_layout_standard">
+	        
+	            <div class="page" style="padding-top:0px;">
+	                <div class="oe_structure" />
+	
+	<div style="text-align:right;"><span style="padding:left:200px;"><strong>Lugar:</strong> <span t-field="docs.lugar"/></span>​  <span style="padding-right:0px;"><strong>Fecha:​</strong> <span t-field="docs.fecha"/></span></div>
+		
+	<strong>CONSENTIMIENTO INFORMADO DE PROCEDIMIENTOS DE ENFERMERÍA EXPRESS PARA PACIENTE:</strong>  <br/><br/>
+	<span t-field="docs.paciente.apellido_paterno"/> <span t-field="docs.paciente.apellido_materno"/> <span t-field="docs.paciente.nombres"/>
+	<br/>
+	<br/>
+	Los siguientes son procedimientos de enfermería que el personal podría realizar según la condición de
+	salud del paciente y que son derivados de las órdenes impartidas por el médico tratante:<br/>
+	
+	<ul>
+	<li>Toma de muestras de laboratoriales</li>
+	<li>Valoración clínica y exploración física</li>
+	<li>Punción, canalización o inserción de dispositivos arteriales y/o venosos periféricos distales</li>
+	<li>Administración de medicamentos</li>
+	<li>Colocación y retiro de sonda nasogástrica</li>
+	<li>Colocación y retiro de catéter urinario</li>
+	<li>Aspiración de secreciones orales/traqueales</li>
+	<li>Colocación y retiro de cánula nasal o mascarilla con oxígeno,Nebulizaciones.</li>
+	<li>Curación de heridas, úlceras por presión y manejo de pie diabético.</li>
+	<li>Sutura de herida superficial.</li>
+	</ul>
+	
+	Beneficios: Los procedimientos forman parte integral del tratamiento y del plan de manejo establecido
+	por el médico. <br/>
+	
+	Riesgos y complicaciones: Durante y posterior a la realización de los procedimientos, el paciente puede
+	estar expuesto:<br/>
+	<ul>
+	<li>Dolor local</li>
+	<li>Inflamación en sitios de punción y/o colocación de dispositivos</li>
+	<li>Lesion de piel y tejidos</li>
+	<li>Sangrado</li>
+	<li>Retiro accidental del dispositivo médico</li>
+	<li>Alergias</li>
+	<li>Infección en piel y/o área circundante.</li>
+	</ul>
+	
+	<strong>AUTORIZACIÓN DE PACIENTE, FAMILIAR, CUIDADOR O REPRESENTANTE LEGAL</strong> ​ Manifiesto que
+	me han explicado la naturaleza y razones de los actos de cuidado de enfermería, su importancia dentro
+	del proceso de atención, sus beneficios, posibles riesgos y complicaciones; para que el equipo de
+	enfermería profesional realice los actos de cuidado que el paciente requiera.
+	En pleno uso de mis capacidades mentales, autorizo al equipo de enfermería express, para que realicen
+	los procedimientos necesarios que contribuyan al cuidado de salud del paciente. También me
+	comprometo a cumplir las normas de seguridad y auto-cuidado de salubridad nacional. <br/><br/>
+	
+	<p>
+	<t t-if="not docs.no_acepto_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.no_acepto_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> No acepto el procedimiento, bajo mi responsabilidad   
+	 
+	
+	<t t-if="not docs.si_acepto_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.si_acepto_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Acepto procedimiento</p>
+	
+	
+	
+	
+	 <p>Nombre y firma: ______________________________________________________________________________</p>
+	
+	 <p><t t-if="not docs.bool_paciente_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_paciente_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t>    Paciente    
+	
+	
+	<t t-if="not docs.bool_familiar_responsable_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_familiar_responsable_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t>     Familiar Responsable    
+	
+	<t t-if="not docs.bool_cuidador_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_cuidador_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Cuidador    
+	
+	<t t-if="not docs.bool_representante_legal_ci == True" ><img t-att-src="'/syh_module/static/src/img/unchecked.png'" style="max-height: 40px;max-width:40px;"/> </t>
+	 <t t-if="docs.bool_representante_legal_ci == True" ><img t-att-src="'/syh_module/static/src/img/checked.jpeg'" style="max-height: 40px;max-width:40px;"/></t> Representante legal</p>
+	                       </div>
+	                    </div>
+	               </t>
+    </template>
+	
+    <report 
+        id="report_coni_syh"
+        string="Reporte Consentimiento Informado Normal"
+        model="consentimiento.informado" 
+        report_type="qweb-pdf"
+        file="syh_module.report_coni_syh_document" 
+        name="syh_module.report_coni_syh_document" 
+        menu="False"
+    />
+
+</odoo>
