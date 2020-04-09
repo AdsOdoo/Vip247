@@ -18,7 +18,7 @@ class ExpendienteClinico(models.Model):
         timezone = self._context.get('tz')
         if not timezone:
            timezone = self.env.user.partner_id.tz or 'UTC'
-        timezone = tools.ustr(timezone).encode('utf-8')
+#         timezone = tools.ustr(timezone).encode('utf-8')
 
         local = pytz.timezone(timezone)
         naive_from = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
@@ -805,7 +805,7 @@ class ExpendienteClinico(models.Model):
                 'res_model': 'citas.salud',
                 'target': 'new',
                 'type': 'ir.actions.act_window',
-                'context':{'expediente_clinico': self.id,'is_new_popup':True,'default_paciente':self.paciente.id}
+                'context':{'expediente_clinico': self.id,'is_new_popup':True,'default_paciente':self.paciente.id, 'default_fecha' : self.fecha}
                 }    
 #     @api.multi
     @api.onchange('paciente')

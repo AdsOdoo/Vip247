@@ -8,10 +8,12 @@ import logging
 import string
 _logger = logging.getLogger(__name__)
 from .tzlocal import get_localzone
+from pytz import timezone
+
 
 # class CalendarEvent(models.Model):
 #     _inherit = 'calendar.event'
-#     
+#      
 #     @api.model_create_multi
 #     def create(self,vals):
 #         res = super(CalendarEvent, self).create(vals)
@@ -31,7 +33,7 @@ class CitasSalud(models.Model):
 
     paciente = fields.Many2one('pacientes',"Paciente", required=True)
     nombre_completo = fields.Char(string="Nombre",related='paciente.nombre_completo', store=True)
-    doctor = fields.Many2one('res.partner', string='Doctor(a)', required=True, domain="[('doctor', '=', True)]")
+    doctor = fields.Many2one('res.partner', string='Doctor(a)', required=True,domain="[('doctor', '=', True)]") 
 
     fecha = fields.Date("Fecha",readonly=True,required=True)
     hora = fields.Float("Hora",readonly=True,required=True)
@@ -112,12 +114,18 @@ class CitasSalud(models.Model):
         timezone = self._context.get('tz')
         if not timezone:
             timezone = self.env.user.partner_id.tz or 'UTC'
-        timezone = tools.ustr(timezone).encode('utf-8')
+#         timezone = tools.ustr(timezone).encode('utf-8')
 
-        local = pytz.timezone(timezone)
+#         local = pytz.timezone(timezone)
+#         naive_from = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+#         local_dt_from = naive_from.replace(tzinfo=pytz.UTC).astimezone(local)
+#         date_from = local_dt_from.strftime ("%Y-%m-%d %H:%M")
+        
+        local = get_localzone()
         naive_from = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
-        local_dt_from = naive_from.replace(tzinfo=pytz.UTC).astimezone(local)
-        date_from = local_dt_from.strftime ("%Y-%m-%d %H:%M")
+        local_dt_from = local.localize(naive_from, is_dst=None)
+        utc_dt_from = local_dt_from.astimezone (pytz.utc)
+        date_from = utc_dt_from.strftime ("%Y-%m-%d %H:%M:%S")
         
 #         cld_event = self.env['calendar.event']
 #         event = {
@@ -135,13 +143,13 @@ class CitasSalud(models.Model):
 
         evento = self.env['calendar.event'].create({
                                             'name' : 'Cita ' + (self.nombre_completo or ''),
-                                            'start_datetime': datetime.strptime(date_time,  "%Y-%m-%d %H:%M"), #datetime.now(),
-                                            'stop_datetime' : (datetime.strptime(date_time,  "%Y-%m-%d %H:%M") + timedelta(minutes=60)).strftime('%Y-%m-%d %H:%M:%S'),
+                                            'start_datetime': date_from,
+                                            'stop_datetime' : (datetime.strptime(date_from,  "%Y-%m-%d %H:%M:%S") + timedelta(minutes=60)).strftime('%Y-%m-%d %H:%M:%S'),
                                             'partner_ids': [(6,0,[self.doctor.id])],
                                             'duration': 60,
                                             'description': 'Cita ' + (self.nombre_completo or ''),
-                                            'start': (datetime.strptime(date_from,  "%Y-%m-%d %H:%M") or datetime.now()).strftime('%Y-%m-%d %H:%M:%S'),
-                                            'stop': (datetime.strptime(date_from,  "%Y-%m-%d %H:%M") + timedelta(minutes=60)).strftime('%Y-%m-%d %H:%M:%S')
+                                            'start': date_from or datetime.now().strftime('%Y-%m-%d %H:%M:%S'), #(datetime.strptime(date_from,  "%Y-%m-%d %H:%M:%S")
+                                            'stop': (datetime.strptime(date_from,  "%Y-%m-%d %H:%M:%S") + timedelta(minutes=60)).strftime('%Y-%m-%d %H:%M:%S')
                                             })
         
         if self.paciente and self.paciente.correo_electronico:
@@ -159,7 +167,7 @@ class CitasSalud(models.Model):
 #                                           'body_html' : "<p>Hola, " + (self.nombre_completo or '') +" este es un recordatorio de su cita para el día " + (self.fecha or '') + " con el Dr.(a) " + (self.doctor.name or '') + " el día " + (self.fecha or '') +" .</p>",
 #                                           'email_to' : self.paciente.correo_electronico
 #                                           })
-              #  mail.send()
+            #  mail.send()
         return True
 
 #     @api.multi
