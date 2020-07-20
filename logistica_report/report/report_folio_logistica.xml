@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_folio_logistica">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+           <t t-call="web.external_layout">
+                <div class="page">
+			<!--TITLE-->
+                <br/>
+			    <br/>
+                    	<h3>Orden de entrega <span t-field="o.project_id"/></h3>
+                    	<!--<div style="text-align:center;"><h3>Folio Logistica</h3></div>-->
+		    	
+
+		   
+	 	   <div>
+			<!--CLIENT INFO-->
+			<strong style="font-size:15px;"><!--<span t-field="o.partner_id"/>--></strong><br/>
+			<p style="font-size:15px;">Un reporte de investigación es un documento donde se presenta el resultado de un estudio en torno a un tema específico.</p>
+               <datos xml:space="preserve">
+                   <strong style="font-size:15px;" xml:space="preserve">NOMBRE PACIENTE:  </strong><span style="font-size:15px;" t-field="o.partner_id.name"/><br/>
+                   <strong style="font-size:15px;" xml:space="preserve">DOMICILIO:   </strong><span style="font-size:15px;" t-field="o.partner_id.street_name"/><span>#</span><span style="font-size:15px;" t-field="o.partner_id.street_number"/></datos><br/>
+			<strong style="font-size:15px;">COLONIA:  </strong><span style="font-size:15px;" t-field="o.partner_id.l10n_mx_edi_colony"/><br/>
+                    	<strong style="font-size:15px;">MUNICIPIO Y EDO:  </strong><span style="font-size:15px;" t-field="o.partner_id.state_id.name"/><br/>
+                    	
+               <br/>
+			
+
+			<p style="font-size:20px;">Servicio solicitado</p>
+
+
+            <p style="font-size:14px; text-align: justify;"><span style="font-size:15px;" t-field="o.description"/></p>
+            <br/>
+              
+             <table class="table table-sm">
+   			<thead>
+        			<tr>
+            				
+            			
+            				<th class="text-left" style="width:40%;">Descripción</th>
+                            <th class="text-left">Codigo</th>
+            				<th class="text-left">Cantidad</th>
+            				<th class="text-left">Precio</th>
+        			</tr>
+    			</thead>
+
+	 		 <tbody>
+                <t t-foreach="o.sale_order_id" t-as="p">
+                <t t-foreach="p.picking_ids" t-as="line">
+                    
+                        <tr>
+                            
+                            <td class="text-left" style="font-size:13px;"><span t-field="line.product_id"/></td>
+                            <td class="text-left"><span t-field="line.qty_done"/></td>
+                            <td class="text-left"><span t-field="line.lot_id"/></td>
+                        </tr>
+                </t>
+                </t>
+                </tbody>
+		       </table>  
+             <div class="row">
+				<div class="col-5"></div>
+				<div class="col-4"></div>
+				<div class="col-3"><strong style="font-size:14px;">impuestos:  </strong><span style="font-size:15px;" t-field="o.sale_order_id.amount_tax"/></div>
+			</div><br/>  
+            <div class="row">
+				<div class="col-5"></div>
+				<div class="col-4"></div>
+				<div class="col-3"><strong style="font-size:14px;">Total:  </strong><span style="font-size:15px;" t-field="o.sale_order_id.amount_total"/></div>
+			</div>
+            <br/>
+			<br/>  
+               <p style="font-size:14px; text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pulvinar justo eu purus ultricies consectetur. Donec a nisl fermentum ligula blandit scelerisque a non dolor. Nullam in fermentum risus. Donec nec tincidunt mauris, at aliquet felis. </p>
+            <br/>
+            <br/> 
+
+            
+<!--
+            <div t-if="o.x_firma2" class="mt32 ml64 mr4" name="x_firma2">
+                <div class="offset-8">
+                    <strong>Firma</strong>
+                </div>
+                <div class="offset-8">
+                    <img t-att-src="image_data_uri(o.x_firma2)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="offset-8 text-center">
+                    <p t-field="o.partner_id.name"/>
+                </div>
+            </div>
+
+
+
+
+			SIGNATURE
+			<div class="row">
+				<div class="col-4"></div>
+				<div class="col-4" style="border-top:1px solid black;"></div>
+				<div class="col-4"></div>
+			</div>
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4"><center><span style="font-size:15px;" t-field="o.partner_id.name"/></center></div>
+				<div class="col-4"></div>
+            </div>
+-->
+		   </div>
+
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+<report
+    id="report_folio_logistica"
+    model="project.task"
+    string="Reporte logistica"
+    report_type="qweb-pdf"
+    name="logistica_report.report_folio_logistica" 
+    file="logistica_report.report_folio_logistica"
+    attachment_use="True"
+
+/> <!--Nombre de plantilla: sale_rental_report.report_sale_rental tambien es clave e ID externo-->
+</odoo>
+
+
+
+<!--move_line_ids_without_package-->
