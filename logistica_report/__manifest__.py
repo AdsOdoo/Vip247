@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-##############################################################################
-#                 @author IT Admin
-#
-##############################################################################
+
 
 {
     'name': 'Reporte de Logistica',
@@ -16,8 +12,7 @@
         'base','project',
     ],
     'data': [
-        #'views/sale_rental_view.xml',
-        'report/report_folio_logistica.xml',
+        'report/report_folio_logistica.xml','report/report_contrato_rental.xml'
     ],
     'application': False,
     'installable': True,
