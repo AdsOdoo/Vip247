@@ -16,3 +16,4 @@ from . import traslado
 from . import causamuerte
 from . import nota_defuncion
 from . import hoja_enfermeria
+from . import employee

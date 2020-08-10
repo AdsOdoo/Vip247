@@ -4,7 +4,7 @@
     "author": "IT Admin",
     "version": "13.0.0.1",
     "category": "Other",
-    "depends": ['sale_stock','base','calendar'],
+    "depends": ['sale_stock','base','calendar','hr'],
     "data": [
         'views/res_partner_view.xml',
         'data/sequence_data.xml',
@@ -44,6 +44,7 @@
         'views/causamuerte.xml',
         'views/nota_defuncion.xml',
         'views/hoja_enfermeria.xml',
+        'views/employee.xml',
     ],
     "license": 'AGPL-3',
     'installable': True,

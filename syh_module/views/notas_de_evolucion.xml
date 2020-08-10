@@ -40,13 +40,26 @@
                         <field name="circunferencia_cintura" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="circunferencia_cuello" attrs="{'readonly':[('state','!=','draft')]}"/>
 
-                        <!--<field name="nota_evolucion" attrs="{'readonly':[('state','!=','draft')]}"/>-->                        
+                        <field name="cetona" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="colesterol" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="acido_urico" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="hbac" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="hb" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="hct" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="lactato" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="presion" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="temp_oido" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="temp_frente" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="temp_axila" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="temp_recto" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="sistole" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="diastole" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="pulso" attrs="{'readonly':[('state','!=','draft')]}"/>
+
                         <field name="subjetivo_text" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="objetivo_text" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="analisis_text" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="plan_text" attrs="{'readonly':[('state','!=','draft')]}"/>
-                       <!-- <field name="cita_text" attrs="{'readonly':[('state','!=','draft')]}"/> -->
-
                     </group>
                     </page>
                 </notebook>

@@ -95,7 +95,9 @@
                         </button> -->
                       </button>
                 	</div>
-                	
+                	<group cols="4">
+                         <field name="name" string="Número de paciente"/>
+                	</group>
                 	<group cols="4" string="DATOS DEL PACIENTE">
                                <group>
                                   <field name="dias" invisible="1"/>
@@ -130,11 +132,12 @@
                                   <field name="correo_electronico"/>
                                   <field name="unidad_medica" string="Unidad Médica"/>
                                   <field name="partner_id"/>
+                                  <field name="employee_id"/>
                                </group>
                             </group>
                     <footer invisible="not context.get('is_new_popup')">
                 		<button class="oe_highlight" string="Save" type="object" name="save_paciente_paciente" />
-                      	<button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>                	
+                      	<button string="Cancelar" class="btn btn-sm btn-default" special="cancel"/>
                     </footer>
                 </sheet>
             </form>
@@ -145,6 +148,7 @@
         <field name="model">pacientes</field>
         <field name="arch" type="xml">
             <tree string="Pacientes">
+            	<field name="name"/>
             	<field name="nombres"/>
               <field name="apellido_paterno"/>
               <field name="apellido_materno"/>

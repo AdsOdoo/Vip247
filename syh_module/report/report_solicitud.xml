@@ -20,14 +20,12 @@
     	<t t-call="web.html_container">
 	        <div class="header" style="padding-left:75px;">
 
-					    <div class="col-xs-6" style="padding-top-50px;">
+					    <div class="col-xs-6" style="padding-top-80px;">
 	                	<t t-if="docs.unidad_medica == '01'">
-	                	<img t-att-src="'/syh_module/static/src/img/logo01.png'" style="max-height: 150px;max-width:150px;padding-left:200px;padding-top:50px;"/>
-						   
-	                	</t>
-	                	<t t-if="docs.unidad_medica == '02'">
-	                	<img t-att-src="'/syh_module/static/src/img/logo02.jpg'" style="max-height: 150px;max-width:150px;padding-top:50px;padding-left:200"/>
-	                	</t>
+							<img src="/syh_module/static/src/img/logo01.png" style="max-height: 150px;max-width:150px;"/>
+						</t>
+	                    <t t-if="docs.unidad_medica == '02'">
+							<img src="/syh_module/static/src/img/logo02.jpg" style="max-height: 150px;max-width:150px;"/>	                    </t>
 	        
 	            <div class="col-xs-6 float-right" style="text-align:right;font-size:20px;padding-right:100px;padding-top:70px;">
 	                    <t t-if="docs.unidad_medica == '01'">

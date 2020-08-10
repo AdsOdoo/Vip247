@@ -9,7 +9,7 @@ class Pacientes(models.Model):
     _rec_name = "nombre_completo"
 
     expediente_clinico = fields.Char("Contratos", default=lambda self: _('New'))
-    name = fields.Char("Name", required=True, copy=False, readonly=True, states={'draft': [('readonly', False)]}, index=True, default=lambda self: _('New'))
+    name = fields.Char("Número de paciente", required=True, copy=False) #, readonly=True, states={'draft': [('readonly', False)]}, index=True, default=lambda self: _('New'))
 
     #PARTE SUPERIOR
     #name = fields.Char("Name", default=lambda self: _('New')) 
@@ -126,6 +126,7 @@ class Pacientes(models.Model):
     defuncion_ids = fields.One2many('notadefuncion', 'paciente', 'Notas de Defunción')
 
     partner_id = fields.Many2one('res.partner',"Cliente De Odoo")
+    employee_id = fields.Many2one('hr.employee',"Empleado De Salud y Hogar")
 
 #     @api.multi
     def _compute_expediente_clinico(self):
@@ -194,7 +195,7 @@ class Pacientes(models.Model):
         if len(expediente_clinicos) > 1:
             action['domain'] = [('id', 'in', expediente_clinicos.ids)]
         elif len(expediente_clinicos) == 1:
-            action['views'] = [(self.env.ref('syh_module.view_expediente_clinico_form').id, 'form')]
+            action['views'] = [(self.env.ref('syh_module.view_pacientes_form').id, 'form')]
             action['res_id'] = expediente_clinicos.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}

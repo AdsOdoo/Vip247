@@ -45,6 +45,23 @@ class NotasDeEvolucion(models.Model):
     peso = fields.Char(string="Peso (kg)")
     talla = fields.Char(string="Talla (cm)")
 
+    #agregados por foracare
+    cetona = fields.Char(string="Cetona (mmol/L)")
+    colesterol = fields.Char(string="Colesterol (mg/dL)")
+    acido_urico = fields.Char(string="Ácido úrico (mg/dL)")
+    hbac = fields.Char(string="HbA1c")
+    hb = fields.Char(string="HB (g/dL)")
+    hct = fields.Char(string="HCT (%)")
+    lactato = fields.Char(string="Lactato (mmol/L)")
+    presion = fields.Char(string="Presión sanguínea (mmHg)")
+    temp_oido = fields.Char(string="Temperatura oido (°C)")
+    temp_frente = fields.Char(string="Temperatura frente (°C)")
+    temp_axila = fields.Char(string="Temperatura axila (°C)")
+    temp_recto = fields.Char(string="Temperatura recto (°C)")
+    sistole = fields.Char(string="Sístole (mmHg)")
+    diastole = fields.Char(string="Diástole (mmHg)")
+    pulso = fields.Char(string="Pulso")
+
     fecha = fields.Date("Fecha", default=fields.Datetime.now)
     hora = fields.Char(string="Hora", default=_get_hora) # default=(fields.Datetime.now - timedelta(hours=6)).strftime('%H:%M')
     nota_evolucion = fields.Text(string="Nota de evolución")
