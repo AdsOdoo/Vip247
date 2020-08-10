@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nomina_cfdi_extras_ee_assests" name="nomina_cfdi_extras_ee Assets" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/nomina_cfdi_extras_ee/static/src/js/list_controller.js"></script>
+        </xpath>
+    </template>	
+</odoo>
