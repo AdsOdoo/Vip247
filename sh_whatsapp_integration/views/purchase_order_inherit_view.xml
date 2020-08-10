@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="purchase_order_inherit_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+            	<button name="button_confirm" position="after">
+	            	<button
+	                        type="action"
+	                        name="%(sh_whatsapp_integration.sh_whatsapp_integration_send_whatsapp_message_action)d"
+	                        class="oe_highlight"
+	                        string="Send By Whatsapp"
+	                        context="{'default_partner_ids': partner_id,'default_message':text_message,'default_purchase_order_id':active_id}"
+	                        groups="sh_whatsapp_integration.group_purchase_whatsapp_feature" 
+	                    />
+	                <button name="send_by_whatsapp_direct_to_po" type="object" class="oe_highlight" string="Send By Whatsapp Direct" groups="sh_whatsapp_integration.group_purchase_whatsapp_feature"/>
+            	</button>
+            	
+            	 <field name="notes" position="after">
+	            	<field name="text_message" invisible="1"/>
+	            </field>
+	            
+	           
+            </field>
+         </record>
+     </data>
+</odoo>

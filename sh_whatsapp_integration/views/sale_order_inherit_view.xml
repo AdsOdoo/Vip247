@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+    <!-- Add action entry in the Action Menu for CRM Lead -->
+    <record id="view_order_inherit_custom_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            
+            <button name="action_confirm" position="after">
+            	<button
+                        type="action"
+                        name="%(sh_whatsapp_integration.sh_whatsapp_integration_send_whatsapp_message_action)d"
+                        class="oe_highlight"
+                        string="Send By Whatsapp"
+                        context="{'default_partner_ids': partner_id,'default_message':text_message,'default_sale_order_id':active_id}" 
+                        groups="sh_whatsapp_integration.group_sales_whatsapp_feature"
+                    />
+                <button name="send_by_whatsapp_direct" class="oe_highlight" string="Send By Whatsapp Direct" type="object" groups="sh_whatsapp_integration.group_sales_whatsapp_feature"/>
+            </button>
+            <field name="note" position="after">
+            	<field name="text_message" invisible="1"/>
+            </field>
+            
+        </field>
+    </record>
+	</data>
+</odoo>
+

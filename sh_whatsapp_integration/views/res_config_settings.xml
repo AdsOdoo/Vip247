@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>	
+		<!-- Purchase Order -->
+		<record id="sh_show_whatsapp_send_purchase_res_config_settings" model="ir.ui.view">
+			<field name="name">Purchase Whatsapp send</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>			
+			<field name="arch" type="xml">			
+
+				<xpath expr="//div[@data-key='purchase']" position="inside">					
+					<h2>Whatsapp send</h2>
+					<div class="row mt16 o_settings_container">
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="purchase_order_information_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="purchase_order_information_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Information in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="purchase_product_detail_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="purchase_product_detail_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Product details in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="purchase_signature"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="purchase_signature"/>
+	                            <div class="text-muted">
+	    	                        Show Signature
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    <div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="purchase_display_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="purchase_display_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Message in Chatter
+	                            </div>
+	                        </div>
+	                    </div>
+	                     <div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="po_send_pdf_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="po_send_pdf_in_message"/>
+	                            <div class="text-muted">
+	    	                        Send Report URL in Message
+	                            </div>
+	                        </div>
+	                    </div>
+	            	</div>             
+				</xpath>
+				
+			</field>
+		</record>
+		
+		<!-- 	Sale Order -->	
+  		<record id="sh_show_whatsapp_send_sales_res_config_settings" model="ir.ui.view">
+			<field name="name">Whatsapp send</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="sale.res_config_settings_view_form"/>			
+			<field name="arch" type="xml">		
+				
+				<xpath expr="//div[@data-key='sale_management']" position="inside">
+					<h2>Whatsapp send</h2>
+					<div class="row mt16 o_settings_container">
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="order_information_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="order_information_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Information in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="order_product_detail_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="order_product_detail_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Product details in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="signature"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="signature"/>
+	                            <div class="text-muted">
+	    	                        Show Signature
+	                            </div>
+	                        </div>
+	                    </div>
+	            		
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="display_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="display_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Message in Chatter
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="send_pdf_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="send_pdf_in_message"/>
+	                            <div class="text-muted">
+	    	                        Send Report Url in Message
+	                            </div>
+	                        </div>
+	                    </div>
+	            	</div> 
+				</xpath>
+				
+			</field>
+		</record>
+		
+		
+		<!-- Invoice / Bills -->
+  		<record id="sh_show_whatsapp_invoice_bill_config_settings" model="ir.ui.view">
+			<field name="name">Whatsapp send Show Taxes Config Settings</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="account.res_config_settings_view_form"/>			
+			<field name="arch" type="xml">			
+				<xpath expr="//div[@data-key='account']" position="inside">					
+	            	<h2>Whatsapp send</h2>
+					<div class="row mt16 o_settings_container">
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="invoice_order_information_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="invoice_order_information_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Information in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="invoice_product_detail_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="invoice_product_detail_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Product details in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="invoice_signature"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="invoice_signature"/>
+	                            <div class="text-muted">
+	    	                        Show Signature
+	                            </div>
+	                        </div>
+	                    </div>
+	            		
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="invoice_display_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="invoice_display_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Message in Chatter
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="inv_send_pdf_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="inv_send_pdf_in_message"/>
+	                            <div class="text-muted">
+	    	                        Send Report URL in Message
+	                            </div>
+	                        </div>
+	                    </div>
+	            	</div> 
+				</xpath>
+ 			</field>
+		</record>
+		
+		<!-- Inventory -->
+		<record id="sh_show_whatsapp_inventory_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.stock</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+				<xpath expr="//div[@data-key='stock']" position="inside">
+					<h2>Whatsapp send</h2>
+					<div class="row mt16 o_settings_container">
+						
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="inventory_information_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="inventory_information_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Order Information in messsage
+	                            </div>
+	                        </div>
+	                    </div>
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="inventory_signature"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="inventory_signature"/>
+	                            <div class="text-muted">
+	    	                        Show Signature
+	                            </div>
+	                        </div>
+	                    </div>
+					
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="inventory_display_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="inventory_display_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Message in Chatter
+	                            </div>
+	                        </div>
+	                    </div>
+	                      <div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="stock_send_pdf_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="stock_send_pdf_in_message"/>
+	                            <div class="text-muted">
+	    	                        Send Report URL in Message
+	                            </div>
+	                        </div>
+	                    </div>
+					</div>
+				</xpath>
+			</field>
+		</record>
+		
+		
+		<record id="sh_show_whatsapp_res_config_settings_view_crm_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.crm.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//div[@data-key='crm']" position="inside">
+					<h2>Whatsapp send</h2>
+					<div class="row mt16 o_settings_container">
+						
+						<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="crm_lead_display_in_message"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="crm_lead_display_in_message"/>
+	                            <div class="text-muted">
+	    	                        Show Message in Chatter
+	                            </div>
+	                        </div>
+	                    </div>
+						
+	            		<div class="col-12 col-lg-6 o_setting_box" >
+	                    	<div class="o_setting_left_pane">
+		                    	<field name="crm_lead_signature"/>
+	                        </div>
+	                        <div class="o_setting_right_pane">
+		                        <label for="crm_lead_signature"/>
+	                            <div class="text-muted">
+	    	                        Show Signature
+	                            </div>
+	                        </div>
+	                    </div>
+						
+					</div>
+				</xpath>
+			</field>
+		</record>
+		
+		
+	</data>		
+</odoo>
+				
