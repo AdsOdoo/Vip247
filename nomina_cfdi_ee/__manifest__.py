@@ -7,7 +7,7 @@
     Nomina CFDI Module
     ''',
     'author': 'IT Admin',
-    'version': '13.0.1.0.0',
+    'version': '13.0.2',
     'category': 'Employees',
     'depends': [
         'om_hr_payroll',
@@ -33,6 +33,7 @@
         'views/menu.xml',
         'views/horas_extras_view.xml',
         'wizard/wizard_liquidacion_view.xml',
+        'wizard/import_nomina_xml.xml',
     ],
     'installable': True,
     'application': False,

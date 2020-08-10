@@ -41,81 +41,93 @@ class HrPayslipRun(models.Model):
         string=_('Frecuencia de pago'), required=True
     )
     fecha_pago = fields.Date(string=_('Fecha de pago'), required=True)
+    isr_anual = fields.Boolean(string='ISR anual')
 
     @api.onchange('tipo_configuracion')
     def _set_periodicidad(self):
         if self.tipo_configuracion:
-           if self.tipo_configuracion.fijo_imss:
-              values = {
-                  'periodicidad_pago': self.tipo_configuracion.periodicidad_pago,
-                  'isr_ajustar': self.tipo_configuracion.isr_ajustar,
-                  'isr_devolver': self.tipo_configuracion.isr_devolver,
-                  'imss_mes': self.tipo_configuracion.imss_mes,
-                  'imss_dias': self.tipo_configuracion.imss_dias,
-              }
-           else:
-              values = {
-                  'periodicidad_pago': self.tipo_configuracion.periodicidad_pago,
-                  'isr_ajustar': self.tipo_configuracion.isr_ajustar,
-                  'isr_devolver': self.tipo_configuracion.isr_devolver,
-              }
-           self.update(values)
+            if self.tipo_configuracion.fijo_imss:
+                values = {
+                   'periodicidad_pago': self.tipo_configuracion.periodicidad_pago,
+                   'isr_ajustar': self.tipo_configuracion.isr_ajustar,
+                   'isr_devolver': self.tipo_configuracion.isr_devolver,
+                   'imss_mes': self.tipo_configuracion.imss_mes,
+                   'imss_dias': self.tipo_configuracion.imss_dias,
+                   }
+            else:
+                values = {
+                   'periodicidad_pago': self.tipo_configuracion.periodicidad_pago,
+                   'isr_ajustar': self.tipo_configuracion.isr_ajustar,
+                   'isr_devolver': self.tipo_configuracion.isr_devolver,
+               }
+            self.update(values)
 
 
     @api.onchange('periodicidad_pago', 'tipo_configuracion')
     def _dias_pagar(self):
         if self.periodicidad_pago:
-          if self.periodicidad_pago == '01':
-               self.dias_pagar = 1
-          elif self.periodicidad_pago == '02':
-               self.dias_pagar = 7
-          elif self.periodicidad_pago == '03':
-               self.dias_pagar = 14
-          elif self.periodicidad_pago == '04':
-               if self.tipo_configuracion.tipo_pago == '01':
-                  self.dias_pagar = 15
-               else:
-                  delta = self.date_end - self.date_start
-                  self.dias_pagar = delta.days + 1
-          elif self.periodicidad_pago == '05':
-               self.dias_pagar = 30
-          else:
-               delta = self.date_end - self.date_start
-               self.dias_pagar = delta.days + 1
+            if self.periodicidad_pago == '01':
+                self.dias_pagar = 1
+            elif self.periodicidad_pago == '02':
+                self.dias_pagar = 7
+            elif self.periodicidad_pago == '03':
+                self.dias_pagar = 14
+            elif self.periodicidad_pago == '04':
+                if self.tipo_configuracion.tipo_pago == '01':
+                    self.dias_pagar = 15
+                    self.imss_dias = self.imss_mes / 2
+                elif self.tipo_configuracion.tipo_pago == '02':
+                    delta = self.date_end - self.date_start
+                    self.dias_pagar = delta.days + 1
+                    self.imss_dias = delta.days + 1
+                else:
+                    self.dias_pagar = 15.21
+                    self.imss_dias = 15.21
+            elif self.periodicidad_pago == '05':
+                if self.tipo_configuracion.tipo_pago == '01':
+                    self.dias_pagar = 30
+                elif self.tipo_configuracion.tipo_pago == '02':
+                    delta = self.date_end - self.date_start
+                    self.dias_pagar = delta.days + 1
+                else:
+                    self.dias_pagar = 30.42
+            else:
+                delta = self.date_end - self.date_start
+                self.dias_pagar = delta.days + 1
 
     @api.onchange('periodicidad_pago', 'date_end')
     def _compute_imss_mes(self):
         for batch in self:
             if batch.date_end:
-             if self.tipo_configuracion:
-                if not self.tipo_configuracion.fijo_imss:
-                   date_end = batch.date_end
-                   batch.imss_mes = monthrange(date_end.year,date_end.month)[1]
+                if self.tipo_configuracion:
+                    if not self.tipo_configuracion.fijo_imss:
+                        date_end = batch.date_end
+                        batch.imss_mes = monthrange(date_end.year,date_end.month)[1]
+                    else:
+                        batch.imss_mes = self.tipo_configuracion.imss_mes
                 else:
-                   batch.imss_mes = self.tipo_configuracion.imss_mes
-             else:
-                   date_end = batch.date_end
-                   batch.imss_mes = monthrange(date_end.year,date_end.month)[1]
+                    date_end = batch.date_end
+                    batch.imss_mes = monthrange(date_end.year,date_end.month)[1]
 
     @api.onchange('nominas_mes')
     def _get_imss_dias(self):
-           if self.nominas_mes:
-             if self.tipo_configuracion:
-               if not self.tipo_configuracion.fijo_imss:
-                  values = {
-                      'imss_dias': self.imss_mes / self.nominas_mes
-                  }
-                  self.update(values)
-               else:
-                  values = {
-                      'imss_dias': self.tipo_configuracion.imss_dias
-                  }
-                  self.update(values)
-             else:
-                  values = {
-                      'imss_dias': self.imss_mes / self.nominas_mes
-                  }
-                  self.update(values)
+        if self.nominas_mes and self.periodicidad_pago != '04':
+            if self.tipo_configuracion:
+                if not self.tipo_configuracion.fijo_imss:
+                    values = {
+                       'imss_dias': self.imss_mes / self.nominas_mes
+                   }
+                    self.update(values)
+                else:
+                    values = {
+                       'imss_dias': self.tipo_configuracion.imss_dias
+                   }
+                    self.update(values)
+            else:
+                values = {
+                     'imss_dias': self.imss_mes / self.nominas_mes
+                 }
+                self.update(values)
 
     @api.onchange('periodicidad_pago')
     def _update_nominas_mes(self):
@@ -193,18 +205,14 @@ class HrPayslipRun(models.Model):
         #cr = self._cr
         payslip_obj = self.env['hr.payslip']
         for payslip_id in self.slip_ids.ids:
-            try:
-                #cr.execute('SAVEPOINT model_payslip_confirm_cfdi_save')
-                with self.env.cr.savepoint():
-                    payslip = payslip_obj.browse(payslip_id)
-                    if payslip.state in ['draft','verify']:
-                        payslip.action_payslip_done()
-                    if not payslip.nomina_cfdi:
-                        payslip.action_cfdi_nomina_generate()
-                #cr.execute('RELEASE SAVEPOINT model_payslip_confirm_cfdi_save')
-            except Exception as e:
-                #cr.execute('ROLLBACK TO SAVEPOINT model_payslip_confirm_cfdi_save')
-                pass
+            payslip = payslip_obj.browse(payslip_id)
+            if payslip.state in ['draft','verify']:
+               payslip.action_payslip_done()
+               try:
+                   if not payslip.nomina_cfdi:
+                      payslip.action_cfdi_nomina_generate()
+               except Exception as e:
+                   pass
         return
 
     @api.onchange('periodicidad_pago', 'date_start')
@@ -241,14 +249,14 @@ class HrPayslipRun(models.Model):
     @api.onchange('estructura')
     def _set_aguinaldo_dates(self):
         if self.estructura:
-           if self.estructura.name == 'Aguinaldo':
-              fecha_fin = datetime(date.today().year, 12, 31)
-              fecha_inicio = datetime(date.today().year, 1, 1)
-              values = {
-                  'date_end': fecha_fin.strftime('%Y-%m-%d'),
-                  'date_start': fecha_inicio.strftime('%Y-%m-%d'),
-              }
-              self.update(values)
+            if self.estructura.name == 'Aguinaldo':
+                fecha_fin = datetime(date.today().year, 12, 31)
+                fecha_inicio = datetime(date.today().year, 1, 1)
+                values = {
+                    'date_end': fecha_fin.strftime('%Y-%m-%d'),
+                    'date_start': fecha_inicio.strftime('%Y-%m-%d'),
+                }
+                self.update(values)
 
 
 class OtrasEntradas(models.Model):
@@ -268,7 +276,8 @@ class ConfiguracionNomina(models.Model):
     name = fields.Char(string='Nombre', required=True)
     tipo_pago = fields.Selection(
         selection=[('01', 'Por periodo'), 
-                   ('02', 'Por día'),],
+                   ('02', 'Por día'),
+                   ('03', 'Mes proporcional'),],
         string=_('Conteo de días'),
     )
     fijo_imss = fields.Boolean(string='Dias fijos')

@@ -156,16 +156,22 @@ class HrPayslip(models.Model):
     dias_pagar = fields.Float('Pagar en la nomina')
     no_nomina = fields.Selection(
         selection=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6')], string=_('Nómina del mes'))
-    acum_per_totales = fields.Float('Percepciones totales', compute='_get_percepciones_totales')
-    acum_per_grav  = fields.Float('Percepciones gravadas', compute='_get_percepciones_gravadas')
-    acum_isr  = fields.Float('ISR', compute='_get_isr')
-    acum_isr_antes_subem  = fields.Float('ISR antes de SUBEM', compute='_get_isr_antes_subem')
-    acum_subsidio_aplicado  = fields.Float('Subsidio aplicado', compute='_get_subsidio_aplicado')
+    acum_per_totales = fields.Float('Percepciones totales', compute='_get_acumulados_mensual')
+    acum_per_grav  = fields.Float('Percepciones gravadas', compute='_get_acumulados_mensual')
+    acum_isr  = fields.Float('ISR', compute='_get_acumulados_mensual')
+    acum_isr_antes_subem  = fields.Float('ISR antes de SUBEM', compute='_get_acumulados_mensual')
+    acum_subsidio_aplicado  = fields.Float('Subsidio aplicado', compute='_get_acumulados_mensual')
     acum_fondo_ahorro = fields.Float('Fondo ahorro', compute='_get_fondo_ahorro')
     dias_periodo = fields.Float(string=_('Dias en el periodo'), compute='_get_dias_periodo')
     isr_devolver = fields.Boolean(string='Devolver ISR')
     isr_ajustar = fields.Boolean(string='Ajustar ISR en cada nómina')
-    acum_sueldo = fields.Float('Sueldo', compute='_get_sueldo')
+    acum_sueldo = fields.Float('Sueldo', compute='_get_acumulados_mensual')
+
+    acum_per_grav_anual  = fields.Float('Percepciones gravadas (anual)', compute='_get_acumulados_anual')
+    acum_isr_anual  = fields.Float('ISR (anual)', compute='_get_acumulados_anual')
+    acum_isr_antes_subem_anual  = fields.Float('ISR antes de SUBEM (anual)', compute='_get_acumulados_anual')
+    acum_subsidio_aplicado_anual  = fields.Float('Subsidio aplicado (anual)', compute='_get_acumulados_anual')
+    isr_anual = fields.Boolean(string='ISR anual')
 
     mes = fields.Selection(
         selection=[('01', 'Enero'), 
@@ -208,51 +214,86 @@ class HrPayslip(models.Model):
 
             # compute Prima vacacional
             if contract.tipo_prima_vacacional == '01':
-               date_start = contract.date_start
-               if date_start:
-                   d_from = fields.Date.from_string(date_from)
-                   d_to = fields.Date.from_string(date_to)
+                date_start = contract.date_start
+                if date_start:
+                    d_from = fields.Date.from_string(date_from)
+                    d_to = fields.Date.from_string(date_to)
+                
+                    date_start = fields.Date.from_string(date_start)
+                    if datetime.datetime.today().year > date_start.year:
+                        d_from = d_from.replace(date_start.year)
+                        if str(d_to.day) == '29' and str(d_to.month) == '2':
+                            d_to -=  datetime.timedelta(days=1)
+                        d_to = d_to.replace(date_start.year)
+                        
+                        if d_from <= date_start <= d_to:
+                            diff_date = day_to - datetime.datetime.combine(contract.date_start, datetime.time.max)
+                            years = diff_date.days /365.0
+                            antiguedad_anos = int(years)
+                            tabla_antiguedades = contract.tablas_cfdi_id.tabla_antiguedades.filtered(lambda x: x.antiguedad <= antiguedad_anos)
+                            tabla_antiguedades = tabla_antiguedades.sorted(lambda x:x.antiguedad, reverse=True)
+                            vacaciones = tabla_antiguedades and tabla_antiguedades[0].vacaciones or 0
+                            prima_vac = tabla_antiguedades and tabla_antiguedades[0].prima_vac or 0
+                            attendances = {
+                                 'name': 'Prima vacacional',
+                                 'sequence': 2,
+                                 'code': 'PVC',
+                                 'number_of_days': vacaciones * prima_vac / 100.0, #work_data['days'],
+                                 #'number_of_hours': 1['hours'],
+                                 'contract_id': contract.id,
+                            }
+                            res.append(attendances)
 
-                   date_start = fields.Date.from_string(date_start)
-                   if datetime.datetime.today().year > date_start.year:
-                      d_from = d_from.replace(date_start.year)
-                      if str(d_to.day) == '29' and str(d_to.month) == '2':
-                         d_to -=  datetime.timedelta(days=1)
-                      d_to = d_to.replace(date_start.year)
-
-                      if d_from <= date_start <= d_to:
-                          antiguedad_anos = contract.antiguedad_anos
-                          tabla_antiguedades = contract.tablas_cfdi_id.tabla_antiguedades.filtered(lambda x: x.antiguedad <= antiguedad_anos)
-                          tabla_antiguedades = tabla_antiguedades.sorted(lambda x:x.antiguedad, reverse=True)
-                          vacaciones = tabla_antiguedades and tabla_antiguedades[0].vacaciones or 0
-                          prima_vac = tabla_antiguedades and tabla_antiguedades[0].prima_vac or 0
-                          attendances = {
-                               'name': 'Prima vacacional',
-                               'sequence': 2,
-                               'code': 'PVC',
-                               'number_of_days': vacaciones * prima_vac / 100.0, #work_data['days'],
-                               #'number_of_hours': 1['hours'],
-                               'contract_id': contract.id,
-                          }
-                          res.append(attendances)
+            # compute Prima vacacional
+            if contract.tipo_prima_vacacional == '03':
+                date_start = contract.date_start
+                if date_start:
+                    d_from = fields.Date.from_string(date_from)
+                    d_to = fields.Date.from_string(date_to)
+                    
+                    date_start = fields.Date.from_string(date_start)
+                    if datetime.datetime.today().year > date_start.year and d_from.day > 15:
+                        d_from = d_from.replace(date_start.year)
+                        d_from = d_from.replace(day=1)
+                        if str(d_to.day) == '29' and str(d_to.month) == '2':
+                            d_to -=  datetime.timedelta(days=1)
+                        d_to = d_to.replace(date_start.year)
+                        
+                        if d_from <= date_start <= d_to:
+                            diff_date = day_to - datetime.datetime.combine(contract.date_start, datetime.time.max)
+                            years = diff_date.days /365.0
+                            antiguedad_anos = int(years)
+                            tabla_antiguedades = contract.tablas_cfdi_id.tabla_antiguedades.filtered(lambda x: x.antiguedad <= antiguedad_anos)
+                            tabla_antiguedades = tabla_antiguedades.sorted(lambda x:x.antiguedad, reverse=True)
+                            vacaciones = tabla_antiguedades and tabla_antiguedades[0].vacaciones or 0
+                            prima_vac = tabla_antiguedades and tabla_antiguedades[0].prima_vac or 0
+                            attendances = {
+                                 'name': 'Prima vacacional',
+                                 'sequence': 2,
+                                 'code': 'PVC',
+                                 'number_of_days': vacaciones * prima_vac / 100.0, #work_data['days'],
+                                 #'number_of_hours': 1['hours'],
+                                 'contract_id': contract.id,
+                            }
+                            res.append(attendances)
 
             # compute Prima dominical
             if contract.prima_dominical:
-               domingos = 0
-               d_from = fields.Date.from_string(date_from)
-               d_to = fields.Date.from_string(date_to)
-               for i in range((d_to - d_from).days + 1):
-                 if (d_from + datetime.timedelta(days=i+1)).weekday() == 0:
-                    domingos = domingos + 1
-               attendances = {
-                           'name': 'Prima dominical',
-                           'sequence': 2,
-                           'code': 'PDM',
-                           'number_of_days': domingos, #work_data['days'],
-                           #'number_of_hours': 1['hours'],
-                           'contract_id': contract.id,
-                    }
-               res.append(attendances)
+                domingos = 0
+                d_from = fields.Date.from_string(date_from)
+                d_to = fields.Date.from_string(date_to)
+                for i in range((d_to - d_from).days + 1):
+                    if (d_from + datetime.timedelta(days=i+1)).weekday() == 0:
+                        domingos = domingos + 1
+                attendances = {
+                            'name': 'Prima dominical',
+                            'sequence': 2,
+                            'code': 'PDM',
+                            'number_of_days': domingos, #work_data['days'],
+                            #'number_of_hours': 1['hours'],
+                            'contract_id': contract.id,
+                     }
+                res.append(attendances)
 
             # compute leave days
             leaves = {}
@@ -327,7 +368,7 @@ class HrPayslip(models.Model):
                            current_leave_struct['number_of_days'] += hours / work_hours
 
             # compute worked days
-            work_data = contract.employee_id.get_work_days_data(day_from, day_to, calendar=contract.resource_calendar_id)
+            work_data = contract.employee_id._get_work_days_data(day_from, day_to, calendar=contract.resource_calendar_id)
             number_of_days = 0
 
             # ajuste en caso de nuevo ingreso
@@ -443,6 +484,40 @@ class HrPayslip(models.Model):
                           'contract_id': contract.id,
                       }
                       res.append(attendances)
+               #calculo para nóminas mensuales
+               elif contract.periodicidad_pago == '05':
+                  if contract.tipo_pago == '01':
+                      total_days = work_data['days'] + leave_days
+                      if total_days != 30:
+                         if leave_days == 0 and not nvo_ingreso:
+                            number_of_days = 30
+                         elif nvo_ingreso:
+                            number_of_days = work_data['days'] - leave_days
+                         else:
+                            number_of_days = 30 - leave_days
+                  elif contract.tipo_pago == '03':
+                      total_days = work_data['days'] + leave_days
+                      if total_days != 30.42:
+                         if leave_days == 0  and not nvo_ingreso:
+                            number_of_days = 30.42
+                         elif nvo_ingreso:
+                            number_of_days = work_data['days'] * 30.42 / 30 - leave_days
+                         else:
+                            number_of_days = 30.42 - leave_days
+                      else:
+                         number_of_days = work_data['days'] * 30.42 / 30
+                  else:
+                      dias_periodo = (date_to - date_start).days + 1
+                      total_days = work_data['days'] + leave_days
+                      if total_days != dias_periodo:
+                         if leave_days == 0  and not nvo_ingreso:
+                            number_of_days = dias_periodo
+                         elif nvo_ingreso:
+                            number_of_days = work_data['days'] - leave_days
+                         else:
+                            number_of_days = dias_periodo - leave_days
+                      else:
+                         number_of_days = work_data['days']
                else:
                   number_of_days = work_data['days']
             else:
@@ -543,126 +618,6 @@ class HrPayslip(models.Model):
         return super(HrPayslip, self).copy(default=default)
 
     @api.onchange('mes')
-    def _get_percepciones_gravadas(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio # self.date_from
-            date_end = mes_actual.dia_fin #self.date_to
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'TPERG')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_per_grav = total
-
-    @api.onchange('mes')
-    def _get_isr(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio # self.date_from
-            date_end = mes_actual.dia_fin #self.date_to
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'ISR2'),('category_id.code','=','DED')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_isr = total
-
-    @api.onchange('mes')
-    def _get_isr_antes_subem(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio # self.date_from
-            date_end = mes_actual.dia_fin #self.date_to
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'ISR')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_isr_antes_subem = total
-
-    @api.onchange('mes')
-    def _get_subsidio_aplicado(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio # self.date_from
-            date_end = mes_actual.dia_fin #self.date_to
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'SUB')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_subsidio_aplicado = total
-
-    @api.onchange('mes')
     def _get_fondo_ahorro(self):
         total = 0
         if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
@@ -692,67 +647,7 @@ class HrPayslip(models.Model):
                         total += line.total
         self.acum_fondo_ahorro = total
 
-    @api.onchange('mes')
-    def _get_percepciones_totales(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio
-            date_end = mes_actual.dia_fin
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'TPER')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_per_totales = total
-
-    @api.onchange('mes')
-    def _get_sueldo(self):
-        total = 0
-        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
-            mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
-            date_start = mes_actual.dia_inicio # self.date_from
-            date_end = mes_actual.dia_fin #self.date_to
-            domain=[('state','=', 'done')]
-            if date_start:
-                domain.append(('date_from','>=',date_start))
-            if date_end:
-                domain.append(('date_to','<=',date_end))
-            domain.append(('employee_id','=',self.employee_id.id))
-            rules = self.env['hr.salary.rule'].search([('code', '=', 'P001')])
-            payslips = self.env['hr.payslip'].search(domain)
-            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
-            employees = {}
-            for line in payslip_lines:
-                if line.slip_id.employee_id not in employees:
-                    employees[line.slip_id.employee_id] = {line.slip_id: []}
-                if line.slip_id not in employees[line.slip_id.employee_id]:
-                    employees[line.slip_id.employee_id].update({line.slip_id: []})
-                employees[line.slip_id.employee_id][line.slip_id].append(line)
-
-            for employee, payslips in employees.items():
-                for payslip,lines in payslips.items():
-                    for line in lines:
-                        total += line.total
-        self.acum_sueldo = total
-
-    def get_acumulado(self, codigo):
+    def acumulado_mes(self, codigo):
         total = 0
         if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
             mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
@@ -780,6 +675,52 @@ class HrPayslip(models.Model):
                     for line in lines:
                         total += line.total
         return total
+
+    def acumulado_anual(self, codigo):
+        total = 0
+        if self.employee_id and self.mes and self.contract_id.tablas_cfdi_id:
+            #mes_actual = self.contract_id.tablas_cfdi_id.tabla_mensual.search([('dia_inicio', '<=', self.date_from),('dia_fin', '>=', self.date_to)],limit =1)
+            date_start = date(fields.Date.from_string(self.date_from).year, 1, 1)
+            date_end = date(fields.Date.from_string(self.date_from).year, 12, 31)
+            domain=[('state','=', 'done')]
+            if date_start:
+                domain.append(('date_from','>=',date_start))
+            if date_end:
+                domain.append(('date_to','<=',date_end))
+            domain.append(('employee_id','=',self.employee_id.id))
+            rules = self.env['hr.salary.rule'].search([('code', '=', codigo)])
+            payslips = self.env['hr.payslip'].search(domain)
+            payslip_lines = payslips.mapped('line_ids').filtered(lambda x: x.salary_rule_id.id in rules.ids)
+            employees = {}
+            for line in payslip_lines:
+                if line.slip_id.employee_id not in employees:
+                    employees[line.slip_id.employee_id] = {line.slip_id: []}
+                if line.slip_id not in employees[line.slip_id.employee_id]:
+                    employees[line.slip_id.employee_id].update({line.slip_id: []})
+                employees[line.slip_id.employee_id][line.slip_id].append(line)
+
+            for employee, payslips in employees.items():
+                for payslip,lines in payslips.items():
+                    for line in lines:
+                        total += line.total
+        return total
+
+    @api.onchange('mes')
+    def _get_acumulados_mensual(self):
+         self.acum_sueldo = self.acumulado_mes('P001')
+         self.acum_per_totales = self.acumulado_mes('TPER')
+         #self.acum_fondo_ahorro = acumulado_mes('P001')
+         self.acum_subsidio_aplicado = self.acumulado_mes('SUB')
+         self.acum_isr_antes_subem = self.acumulado_mes('ISR')
+         self.acum_per_grav = self.acumulado_mes('TPERG')
+         self.acum_isr = self.acumulado_mes('ISR2')
+
+    @api.onchange('mes')
+    def _get_acumulados_anual(self):
+         self.acum_subsidio_aplicado_anual = self.acumulado_anual('SUB')
+         self.acum_isr_antes_subem_anual = self.acumulado_anual('ISR')
+         self.acum_per_grav_anual = self.acumulado_anual('TPERG')
+         self.acum_isr_anual = self.acumulado_anual('ISR2')
 
     @api.model
     def to_json(self):
@@ -810,65 +751,65 @@ class HrPayslip(models.Model):
                 _logger.info('codigo %s monto %s', line.salary_rule_id.code, line.total)
 
                 if line.salary_rule_id.exencion:
-                   percepciones_excentas_lines += 1
-                   _logger.info('codigo %s', line.salary_rule_id.parte_gravada.code)
-                   concepto_gravado = self.env['hr.payslip.line'].search([('code','=',line.salary_rule_id.parte_gravada.code),('slip_id','=',self.id)], limit=1)
-                   if concepto_gravado:
-                       parte_gravada = concepto_gravado.total
-                       _logger.info('total gravado %s', concepto_gravado.total)
-
-                   _logger.info('codigo %s', line.salary_rule_id.parte_exenta.code)
-                   concepto_exento = self.env['hr.payslip.line'].search([('code','=',line.salary_rule_id.parte_exenta.code),('slip_id','=',self.id)], limit=1)
-                   if concepto_exento:
-                       parte_exenta = concepto_exento.total
-                       _logger.info('total gravado %s', concepto_exento.total)
-
+                    percepciones_excentas_lines += 1
+                    _logger.info('codigo %s', line.salary_rule_id.parte_gravada.code)
+                    concepto_gravado = self.env['hr.payslip.line'].search([('code','=',line.salary_rule_id.parte_gravada.code),('slip_id','=',self.id)], limit=1)
+                    if concepto_gravado:
+                        parte_gravada = concepto_gravado.total
+                        _logger.info('total gravado %s', concepto_gravado.total)
+                    
+                    _logger.info('codigo %s', line.salary_rule_id.parte_exenta.code)
+                    concepto_exento = self.env['hr.payslip.line'].search([('code','=',line.salary_rule_id.parte_exenta.code),('slip_id','=',self.id)], limit=1)
+                    if concepto_exento:
+                        parte_exenta = concepto_exento.total
+                        _logger.info('total gravado %s', concepto_exento.total)
+                    
                     # horas extras
-                   if line.salary_rule_id.tipo_cpercepcion.clave == '019':
-                       percepciones_horas_extras = self.env['hr.payslip.worked_days'].search([('payslip_id','=',self.id)])
-                       if percepciones_horas_extras:
-                           _logger.info('si hay ..')
-                           for ext_line in percepciones_horas_extras:
-                               #_logger.info('codigo %s.....%s ', line.code, ext_line.code)
-                               if line.code == ext_line.code:
-                                   if line.code == 'HEX1':
-                                       tipo_hr = '03'
-                                   elif line.code == 'HEX2':
-                                       tipo_hr = '01'
-                                   elif line.code == 'HEX3':
-                                       tipo_hr = '02'
-                                   lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
-                                      'Clave': line.code,
-                                      'Concepto': line.salary_rule_id.name,
-                                      'ImporteGravado': parte_gravada,
-                                      'ImporteExento': parte_exenta,
-                                      'Dias': ext_line.number_of_days,
-                                      'TipoHoras': tipo_hr,
-                                      'HorasExtra': ext_line.number_of_hours,
-                                      'ImportePagado': line.total})
-
-                   # Ingresos en acciones o títulos valor que representan bienes
-                   elif line.salary_rule_id.tipo_cpercepcion.clave == '045':
-                       lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
-                          'Clave': line.code,
-                          'Concepto': line.salary_rule_id.name,
-                          'ValorMercado': 56,
-                          'PrecioAlOtorgarse': 48,
-                          'ImporteGravado': parte_gravada,
-                          'ImporteExento': parte_exenta})
-                   else:
-                       lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
-                          'Clave': line.code,
-                          'Concepto': line.salary_rule_id.name,
-                          'ImporteGravado': parte_gravada,
-                          'ImporteExento': parte_exenta})
+                    if line.salary_rule_id.tipo_cpercepcion.clave == '019':
+                        percepciones_horas_extras = self.env['hr.payslip.worked_days'].search([('payslip_id','=',self.id)])
+                        if percepciones_horas_extras:
+                            _logger.info('si hay ..')
+                            for ext_line in percepciones_horas_extras:
+                                #_logger.info('codigo %s.....%s ', line.code, ext_line.code)
+                                if line.code == ext_line.code:
+                                    if line.code == 'HEX1':
+                                        tipo_hr = '03'
+                                    elif line.code == 'HEX2':
+                                        tipo_hr = '01'
+                                    elif line.code == 'HEX3':
+                                        tipo_hr = '02'
+                                    lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
+                                       'Clave': line.code,
+                                       'Concepto': line.salary_rule_id.name,
+                                       'ImporteGravado': parte_gravada,
+                                       'ImporteExento': parte_exenta,
+                                       'Dias': ext_line.number_of_days,
+                                       'TipoHoras': tipo_hr,
+                                       'HorasExtra': ext_line.number_of_hours,
+                                       'ImportePagado': line.total})
+                    
+                    # Ingresos en acciones o títulos valor que representan bienes
+                    elif line.salary_rule_id.tipo_cpercepcion.clave == '045':
+                        lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
+                           'Clave': line.code,
+                           'Concepto': line.salary_rule_id.name,
+                           'ValorMercado': 56,
+                           'PrecioAlOtorgarse': 48,
+                           'ImporteGravado': parte_gravada,
+                           'ImporteExento': parte_exenta})
+                    else:
+                        lineas_de_percepcion_exentas.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
+                           'Clave': line.code,
+                           'Concepto': line.salary_rule_id.name,
+                           'ImporteGravado': parte_gravada,
+                           'ImporteExento': parte_exenta})
                 else:
-                   parte_gravada = line.total
-                   lineas_de_percepcion.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
-                   'Clave': line.code,
-                   'Concepto': line.salary_rule_id.name,
-                   'ImporteGravado': line.total,
-                   'ImporteExento': '0'})
+                    parte_gravada = line.total
+                    lineas_de_percepcion.append({'TipoPercepcion': line.salary_rule_id.tipo_cpercepcion.clave,
+                    'Clave': line.code,
+                    'Concepto': line.salary_rule_id.name,
+                    'ImporteGravado': line.total,
+                    'ImporteExento': '0'})
 
                 #if line.salary_rule_id.tipo_cpercepcion.clave != '022' and line.salary_rule_id.tipo_cpercepcion.clave != '023' and line.salary_rule_id.tipo_cpercepcion.clave != '025' and line.salary_rule_id.tipo_cpercepcion.clave !='039' and line.salary_rule_id.tipo_cpercepcion.clave !='044':
                 payslip_total_PERE += round(parte_exenta,2)
@@ -1054,11 +995,11 @@ class HrPayslip(models.Model):
         lineas_trabajo = self.env['hr.payslip.worked_days'].search([('payslip_id','=',self.id)])
         for dias_pagados in lineas_trabajo:
             if dias_pagados.code == 'WORK100':
-                 work_days += dias_pagados.number_of_days
+                work_days += dias_pagados.number_of_days
             if dias_pagados.code == 'FJC':
-                 work_days += dias_pagados.number_of_days
+                work_days += dias_pagados.number_of_days
             if dias_pagados.code == 'SEPT':
-                 work_days += dias_pagados.number_of_days
+                work_days += dias_pagados.number_of_days
 
         if self.tipo_nomina == 'O':
             self.periodicdad = self.contract_id.periodicidad_pago
@@ -1249,7 +1190,7 @@ class HrPayslip(models.Model):
                                             {
                                                 'name': xml_file_name,
                                                 'datas': json_response['factura_xml'],
-                                                'datas_fname': xml_file_name,
+                                                #'datas_fname': xml_file_name,
                                                 'res_model': self._name,
                                                 'res_id': payslip.id,
                                                 'type': 'binary'
@@ -1261,7 +1202,7 @@ class HrPayslip(models.Model):
                                             {
                                                 'name': pdf_file_name,
                                                 'datas': base64.b64encode(report_data),
-                                                'datas_fname': pdf_file_name,
+                                                #'datas_fname': pdf_file_name,
                                                 'res_model': self._name,
                                                 'res_id': payslip.id,
                                                 'type': 'binary'
@@ -1298,9 +1239,9 @@ class HrPayslip(models.Model):
         self.selo_sat = TimbreFiscalDigital.attrib['SelloSAT']
         self.folio_fiscal = TimbreFiscalDigital.attrib['UUID']
         if self.number:
-           self.folio = xml_data.attrib['Folio']
+            self.folio = xml_data.attrib['Folio']
         if self.company_id.serie_nomina:
-           self.serie_emisor = xml_data.attrib['Serie']
+            self.serie_emisor = xml_data.attrib['Serie']
         self.invoice_datetime = xml_data.attrib['Fecha']
         self.version = TimbreFiscalDigital.attrib['Version']
         self.cadena_origenal = '||%s|%s|%s|%s|%s||' % (self.version, self.folio_fiscal, self.fecha_certificacion, 
@@ -1468,6 +1409,22 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).compute_sheet()
         for rec in self:
             rec.calculo_imss()
+            #calculo de especie
+            total = 0
+            #_logger.info('monto especie')
+            for line in rec.line_ids:
+                #_logger.info('codigo %s monto %s', line.code, line.total)
+                if line.salary_rule_id.forma_pago == '002':
+                   #_logger.info('entro codigo %s monto %s', line.code, line.total)
+                   total += line.total
+            #_logger.info('total especie %s', total)
+            lines = []
+            for line in rec.line_ids:
+                if line.code == 'EFECT':
+                   #_logger.info('codigo %s monto %s', line.code, line.total)
+                   line.update({'total': line.total - total, 'amount': line.total - total})
+                   line.refresh()
+            rec.refresh()
         return res
 
     @api.model
@@ -1476,6 +1433,7 @@ class HrPayslip(models.Model):
         dias_laborados = 0
         dias_completos = 0
         dias_falta = 0
+        dias_trabajo = 0
 
         dias_completos = self.imss_dias
         dias_laborados =  dias_completos
@@ -1484,17 +1442,17 @@ class HrPayslip(models.Model):
         dias_registrados = self.env['hr.payslip.worked_days'].search([('payslip_id','=',self.id)])
         if dias_registrados:
             for dias in dias_registrados:
-               if dias.code == 'FI' or dias.code == 'FJS':
-                   dias_laborados = dias_laborados - dias.number_of_days
-                   dias_falta = dias_falta - dias.number_of_days
-               if dias.code == 'INC_MAT' or dias.code == 'INC_EG' or dias.code == 'INC_RT':
-                   dias_laborados = dias_laborados - dias.number_of_days
-                   dias_completos = dias_completos - dias.number_of_days
-               if dias.code == 'WORK100' or dias.code == 'FJC' or dias.code == 'SEPT':
-                   dias_trabajo = dias_trabajo + dias.number_of_days
+                if dias.code == 'FI' or dias.code == 'FJS':
+                    dias_laborados = dias_laborados - dias.number_of_days
+                    dias_falta = dias_falta - dias.number_of_days
+                if dias.code == 'INC_MAT' or dias.code == 'INC_EG' or dias.code == 'INC_RT':
+                    dias_laborados = dias_laborados - dias.number_of_days
+                    dias_completos = dias_completos - dias.number_of_days
+                if dias.code == 'WORK100' or dias.code == 'FJC' or dias.code == 'SEPT':
+                    dias_trabajo = dias_trabajo + dias.number_of_days
         if dias_trabajo == 0:
-           dias_laborados = 0
-           dias_completos = 0
+            dias_laborados = 0
+            dias_completos = 0
 
         #salario_cotizado = self.contract_id.sueldo_base_cotizacion
         base_calculo = 0
@@ -1510,58 +1468,58 @@ class HrPayslip(models.Model):
         calcular_imss = self.env['hr.payslip.line'].search([('salary_rule_id.name','=','IMSS'),('slip_id','=',self.id)])
 
         if calcular_imss:
-           #imss empleado
-           self.emp_exedente_smg = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_excedente_e/100 * base_execente,2)
-           self.emp_prest_dinero = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_prestaciones_e/100 * base_calculo,2)
-           self.emp_esp_pens = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_gastos_med_e/100 * base_calculo,2)
-           self.emp_invalidez_vida = round(dias_laborados * self.contract_id.tablas_cfdi_id.inv_vida_e/100 * base_calculo,2)
-           self.emp_cesantia_vejez = round(dias_laborados * self.contract_id.tablas_cfdi_id.cesantia_vejez_e/100 * base_calculo,2)
-           self.emp_total = self.emp_exedente_smg + self.emp_prest_dinero + self.emp_esp_pens + self.emp_invalidez_vida + self.emp_cesantia_vejez
-
-           #imss patronal
-           factor_riesgo = 0
-           if self.contract_id.riesgo_puesto == '1':
-              factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase1
-           elif self.contract_id.riesgo_puesto == '2':
-              factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase2
-           elif self.contract_id.riesgo_puesto == '3':
-              factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase3
-           elif self.contract_id.riesgo_puesto == '4':
-              factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase4
-           elif self.contract_id.riesgo_puesto == '5':
-              factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase5
-           self.pat_cuota_fija_pat = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_cuota_fija/100 * self.contract_id.tablas_cfdi_id.uma,2)
-           self.pat_exedente_smg =round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_excedente_p/100 * base_execente,2)
-           self.pat_prest_dinero = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_prestaciones_p/100 * base_calculo,2)
-           self.pat_esp_pens = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_gastos_med_p/100 * base_calculo,2)
-           self.pat_riesgo_trabajo = round(dias_laborados * factor_riesgo/100 * base_calculo,2) # falta
-           self.pat_invalidez_vida = round(dias_laborados * self.contract_id.tablas_cfdi_id.inv_vida_p/100 * base_calculo,2)
-           self.pat_guarderias = round(dias_laborados * self.contract_id.tablas_cfdi_id.guarderia_p/100 * base_calculo,2)
-           self.pat_retiro = round(dias_falta * self.contract_id.tablas_cfdi_id.retiro_p/100 * base_calculo,2)
-           self.pat_cesantia_vejez = round(dias_laborados * self.contract_id.tablas_cfdi_id.cesantia_vejez_p/100 * base_calculo,2)
-           self.pat_infonavit = round(dias_falta * self.contract_id.tablas_cfdi_id.apotacion_infonavit/100 * base_calculo,2)
-           self.pat_total = self.pat_cuota_fija_pat + self.pat_exedente_smg + self.pat_prest_dinero + self.pat_esp_pens + self.pat_riesgo_trabajo + self.pat_invalidez_vida + self.pat_guarderias + self.pat_retiro + self.pat_cesantia_vejez + self.pat_infonavit
+            #imss empleado
+            self.emp_exedente_smg = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_excedente_e/100 * base_execente,2)
+            self.emp_prest_dinero = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_prestaciones_e/100 * base_calculo,2)
+            self.emp_esp_pens = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_gastos_med_e/100 * base_calculo,2)
+            self.emp_invalidez_vida = round(dias_laborados * self.contract_id.tablas_cfdi_id.inv_vida_e/100 * base_calculo,2)
+            self.emp_cesantia_vejez = round(dias_laborados * self.contract_id.tablas_cfdi_id.cesantia_vejez_e/100 * base_calculo,2)
+            self.emp_total = self.emp_exedente_smg + self.emp_prest_dinero + self.emp_esp_pens + self.emp_invalidez_vida + self.emp_cesantia_vejez
+            
+            #imss patronal
+            factor_riesgo = 0
+            if self.contract_id.riesgo_puesto == '1':
+                factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase1
+            elif self.contract_id.riesgo_puesto == '2':
+                factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase2
+            elif self.contract_id.riesgo_puesto == '3':
+                factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase3
+            elif self.contract_id.riesgo_puesto == '4':
+                factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase4
+            elif self.contract_id.riesgo_puesto == '5':
+                factor_riesgo = self.contract_id.tablas_cfdi_id.rt_clase5
+            self.pat_cuota_fija_pat = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_cuota_fija/100 * self.contract_id.tablas_cfdi_id.uma,2)
+            self.pat_exedente_smg =round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_excedente_p/100 * base_execente,2)
+            self.pat_prest_dinero = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_prestaciones_p/100 * base_calculo,2)
+            self.pat_esp_pens = round(dias_completos * self.contract_id.tablas_cfdi_id.enf_mat_gastos_med_p/100 * base_calculo,2)
+            self.pat_riesgo_trabajo = round(dias_laborados * factor_riesgo/100 * base_calculo,2) # falta
+            self.pat_invalidez_vida = round(dias_laborados * self.contract_id.tablas_cfdi_id.inv_vida_p/100 * base_calculo,2)
+            self.pat_guarderias = round(dias_laborados * self.contract_id.tablas_cfdi_id.guarderia_p/100 * base_calculo,2)
+            self.pat_retiro = round(dias_falta * self.contract_id.tablas_cfdi_id.retiro_p/100 * base_calculo,2)
+            self.pat_cesantia_vejez = round(dias_laborados * self.contract_id.tablas_cfdi_id.cesantia_vejez_p/100 * base_calculo,2)
+            self.pat_infonavit = round(dias_falta * self.contract_id.tablas_cfdi_id.apotacion_infonavit/100 * base_calculo,2)
+            self.pat_total = self.pat_cuota_fija_pat + self.pat_exedente_smg + self.pat_prest_dinero + self.pat_esp_pens + self.pat_riesgo_trabajo + self.pat_invalidez_vida + self.pat_guarderias + self.pat_retiro + self.pat_cesantia_vejez + self.pat_infonavit
         else:
-           #imss empleado
-           self.emp_exedente_smg = 0
-           self.emp_prest_dinero = 0
-           self.emp_esp_pens = 0
-           self.emp_invalidez_vida = 0
-           self.emp_cesantia_vejez = 0
-           self.emp_total = 0
-
-           #imss patronal
-           self.pat_cuota_fija_pat = 0
-           self.pat_exedente_smg =0
-           self.pat_prest_dinero = 0
-           self.pat_esp_pens = 0
-           self.pat_riesgo_trabajo = 0
-           self.pat_invalidez_vida = 0
-           self.pat_guarderias = 0
-           self.pat_retiro = 0
-           self.pat_cesantia_vejez = 0
-           self.pat_infonavit = 0
-           self.pat_total = 0
+            #imss empleado
+            self.emp_exedente_smg = 0
+            self.emp_prest_dinero = 0
+            self.emp_esp_pens = 0
+            self.emp_invalidez_vida = 0
+            self.emp_cesantia_vejez = 0
+            self.emp_total = 0
+            
+            #imss patronal
+            self.pat_cuota_fija_pat = 0
+            self.pat_exedente_smg =0
+            self.pat_prest_dinero = 0
+            self.pat_esp_pens = 0
+            self.pat_riesgo_trabajo = 0
+            self.pat_invalidez_vida = 0
+            self.pat_guarderias = 0
+            self.pat_retiro = 0
+            self.pat_cesantia_vejez = 0
+            self.pat_infonavit = 0
+            self.pat_total = 0
 
 class HrPayslipMail(models.Model):
     _name = "hr.payslip.mail"

@@ -30,11 +30,11 @@
         </t>
         <div class="header">
 			<div class="row">
-				<div class="col-xs-9 text-left" style="margin-top:20px;"
+				<div class="col-9 text-left" style="margin-top:20px;"
 					t-field="company.report_header" />
 			</div>
 			<div class="row zero_min_height">
-				<div class="col-xs-12">
+				<div class="col-12">
 					<div style="border-bottom: 1px solid black;"></div>
 				</div>
 			</div>
@@ -280,6 +280,7 @@
                     </table>
                     </div>
 				</div>
+
         <!--TABLA OTROS PAGOS -->
         <div class="row mt32 mb32" style="padding-top: 1px;" >
                     <div  class="col-6" font-size="10px;">
@@ -312,6 +313,7 @@
                     </div>
              <div  class="col-6" font-size="10px;"> </div>
         </div>
+
         <!--TERMINA TABLA OTROS PAGOS-->
 
 				<table  width="100%"  font-size="16px;">
@@ -383,14 +385,14 @@
 
 				<div class="row" style="page-break-inside: avoid">
             <!--INICIA CODIGO QR-->
-						<div class="col-xs-5">
+						<div class="col-5">
 						<img t-if="o.qrcode_image" t-att-src="'data:image/png;base64,%s' % to_text(o.qrcode_image)"
 								style="height: 190px;width: 190px;padding-left:10px;" />
 						</div>
             <!--TERMINA CODIGO QR-->
 
             <!--CADENA ORIGINAL>  -->
-          <div class="col-xs-7" style="font-size:11px;">
+          <div class="col-7" style="font-size:11px;">
             <div>
               <strong>Cadena Original del Complemento digital del SAT</strong>
                 <span t-field="o.cadena_origenal" style="word-break:break-word;" />
@@ -410,22 +412,22 @@
         <br/>
 
         <div class="row">
-            <div class="col-3" style="font-size:13px;">
+            <div class="col-3" style="font-size:10px;">
               <strong>Folio fiscal</strong><br/>
                 <span t-field="o.folio_fiscal"/>
             </div>
             
-            <div class="col-3" style="font-size:13px;">
+            <div class="col-3" style="font-size:10px;">
               <strong>No. de Serie del Certificado Emisor</strong>
                 <span t-field="o.numero_cetificado"/>
             </div>
             
-            <div class="col-3" style="font-size:13px;">
+            <div class="col-3" style="font-size:10px;">
               <strong>No. de Serie del Certificado del SAT</strong>
                 <span t-field="o.cetificaso_sat"/>
             </div> 
 
-            <div class="col-3" style="font-size:13px;">
+            <div class="col-3" style="font-size:10px;">
               <strong>Fecha y Hora de Certificación</strong>
                 <span t-field="o.fecha_factura"/>
             </div>

@@ -41,9 +41,11 @@
                             <group string="Procesamiento">
                                 <field name="concepto_periodico"/>
                                 <field name="isr_ajustar"/>
-                                <field name="isr_devolver"/>
+                                <!--<field name="isr_devolver"/>-->
+                                <field name="nom_liquidacion"/>
+                                <field name="isr_anual"/>
                             </group>
-                            <group string="Acumulados (mensual)">
+                            <group name="mensual" string="Acumulados (mensual)"  attrs="{'invisible' : [('isr_ajustar','=',False)]}">
                                 <field name="acum_per_totales" />
                                 <field name="acum_per_grav" />
                                 <field name="acum_isr" />
@@ -51,8 +53,11 @@
                                 <field name="acum_subsidio_aplicado" />
                                 <field name="acum_fondo_ahorro" />
                             </group>
-                            <group string="Liquidacion">
-                                <field name="nom_liquidacion"/>
+                            <group name="anual" string="Acumulados (anual)" attrs="{'invisible' : [('isr_anual','=',False)]}">
+                                <field name="acum_per_grav_anual" />
+                                <field name="acum_isr_anual" />
+                                <field name="acum_isr_antes_subem_anual" />
+                                <field name="acum_subsidio_aplicado_anual" />
                             </group>
                         </group>
                 </page>
@@ -135,8 +140,9 @@
                                        <field name="concepto_periodico"/>
                                    </group>
                                   <group  string="ISR">
-                                       <field name="isr_ajustar"/> 
-                                       <field name="isr_devolver"/> 
+                                       <field name="isr_ajustar"/>
+                                       <!--<field name="isr_devolver"/>-->
+                                       <field name="isr_anual"/>
                                    </group>
                                    <group  string="Dias a cotizar IMSS" attrs="{'invisible':[('tipo_nomina','!=','O')]}">
                                        <field name="imss_dias"  attrs="{'invisible':[('tipo_nomina','!=','O')]}" />
@@ -194,7 +200,7 @@
                            <group  string="Configuración">
                                <field name="name" string='Nombre'/>
                                <field name="periodicidad_pago"/>
-                               <field name="tipo_pago"  attrs="{'invisible':[('periodicidad_pago','!=','04')]}" />
+                               <field name="tipo_pago"  attrs="{'invisible':[('periodicidad_pago','not in',['04', '05'])]}" />
                            </group>
                            <group  string="ISR">
                                <field name="isr_ajustar"/>

@@ -61,8 +61,7 @@ class GeneraLiquidaciones(models.TransientModel):
             })
         # batch
         payslip_obj = self.env['hr.payslip']
-        payslip_onchange_vals = payslip_obj.default_get(payslip_obj.fields_get())
-       
+        payslip_onchange_vals = payslip_obj.onchange_employee_id(date_from, date_to, employee_id=employee.id)
         #Creación de nomina ordinaria
         payslip_vals = {**payslip_onchange_vals.get('value',{})} #TO copy dict to new dict. 
         
@@ -86,16 +85,8 @@ class GeneraLiquidaciones(models.TransientModel):
         worked_days.append((0,0,{'name' :'Dias vacaciones', 'code' : 'VAC', 'contract_id':contract_id, 'number_of_days': self.dias_vacaciones}))
         worked_days.append((0,0,{'name' :'Prima vacacional', 'code' : 'PVC', 'contract_id':contract_id, 'number_of_days': self.dias_prima_vac}))
         worked_days.append((0,0,{'name' :'Dias a pagar', 'code' : 'WORK100', 'contract_id':contract_id, 'number_of_days': self.dias_pendientes_pagar}))
-        
-        obj_hr_payslip_input_type=self.env['hr.payslip.input.type'].search([('name','=','Fondo ahorro')],limit=1)
-        intput_type_id=False
-        if obj_hr_payslip_input_type:
-            intput_type_id=obj_hr_payslip_input_type.id
-        else:
-            obj = obj_hr_payslip_input_type.create({'name':'Fondo ahorro','code':'PFA'})
-            intput_type_id=obj.id
-            
-        payslip_vals['input_line_ids']=[(0,0, {'input_type_id':intput_type_id, 'code': 'PFA', 'amount': self.fondo_ahorro, 'contract_id':contract_id})]
+
+        payslip_vals['input_line_ids']=[(0,0, {'name':'Fondo ahorro', 'code': 'PFA', 'amount': self.fondo_ahorro, 'contract_id':contract_id})]
         
         payslip_vals.update({
             'employee_id' : employee.id,
@@ -110,14 +101,9 @@ class GeneraLiquidaciones(models.TransientModel):
             'mes': str(date_to.month).zfill(2),
             'dias_pagar': self.dias_pendientes_pagar,
             'imss_dias': self.dias_pendientes_pagar,
-            'nom_liquidacion': True,
-            
+            'nom_liquidacion': True
              #'input_line_ids': [(0, 0, x) for x in payslip_vals.get('input_line_ids',[])],
             })
-        payslip_obj = self.env['hr.payslip'].new(payslip_vals)
-        payslip_obj._onchange_employee()
-        payslip_vals = payslip_obj._convert_to_write(payslip_obj._cache)
-        payslip_vals['input_line_ids']=[(0,0, {'input_type_id':intput_type_id, 'code': 'PFA', 'amount': self.fondo_ahorro, 'contract_id':contract_id})]
         payslip_obj.create(payslip_vals)
         
         #Creación de nomina extraordinaria
@@ -128,19 +114,9 @@ class GeneraLiquidaciones(models.TransientModel):
                 payslip_vals2['struct_id'] = structure.id
 
             other_inputs = []
-            intput_type_id=False
-            obj_hr_payslip_input_type=self.env['hr.payslip.input.type'].search([('name','=','Prima antiguedad')],limit=1)
-            if not obj_hr_payslip_input_type:
-                obj_hr_payslip_input_type = obj_hr_payslip_input_type.create({'name':'Prima antiguedad','code':'PDA','struct_ids':structure.id})
-           
-            obj_hr_payslip_input_type_1=self.env['hr.payslip.input.type'].search([('name','=','Indemnizacion')],limit=1)
-            if not obj_hr_payslip_input_type_1:
-                obj_hr_payslip_input_type_1 = obj_hr_payslip_input_type.create({'name':'Indemnizacion','code':'IND','struct_ids':structure.id})
-            
-            obj_hr_payslip_input_type_2=self.env['hr.payslip.input.type'].search([('name','=','Pago por separacion')],limit=1)
-            if not obj_hr_payslip_input_type_2:
-                obj_hr_payslip_input_type_2 = obj_hr_payslip_input_type.create({'name':'Pago por separacion','code':'WORK100','struct_ids':structure.id})
-           
+            other_inputs.append((0,0,{'name' :'Prima antiguedad', 'code' : 'PDA', 'contract_id':contract_id, 'amount': self.monto_prima_antiguedad}))
+            other_inputs.append((0,0,{'name' :'Indemnizacion', 'code' : 'IND', 'contract_id':contract_id, 'amount': self.monto_indemnizacion}))
+            other_inputs.append((0,0,{'name' :'Pago por separacion', 'code' : 'PPS', 'contract_id':contract_id, 'amount': self.pago_separacion}))
             worked_days2 = []
             worked_days2.append((0,0,{'name' :'Dias a pagar', 'code' : 'WORK100', 'contract_id':contract_id, 'number_of_days': 0}))
 
@@ -155,13 +131,6 @@ class GeneraLiquidaciones(models.TransientModel):
                'fecha_pago' : date_to,
                'worked_days_line_ids': worked_days2, #[(0, 0, x) for x in payslip_vals2.get('worked_days_line_ids',[])],
             })
-            payslip_obj = self.env['hr.payslip'].new(payslip_vals2)
-            payslip_obj._onchange_employee()
-            payslip_vals2 = payslip_obj._convert_to_write(payslip_obj._cache)
-            other_inputs.append((0,0,{'input_type_id':obj_hr_payslip_input_type.id,'amount': self.monto_prima_antiguedad}))
-            other_inputs.append((0,0,{'input_type_id':obj_hr_payslip_input_type_1.id, 'amount': self.monto_indemnizacion}))
-            other_inputs.append((0,0,{'input_type_id':obj_hr_payslip_input_type_2.id, 'amount': self.pago_separacion}))
-            payslip_vals2['input_line_ids']=other_inputs
             payslip_obj.create(payslip_vals2)
             
         return True
@@ -211,8 +180,8 @@ class GeneraLiquidaciones(models.TransientModel):
 
             #Dias de aguinaldo
             year_date_start = self.contract_id.date_start.year
-            first_day_date = datetime(date.today().year, 1, 1)
-            if year_date_start < date.today().year:
+            first_day_date = datetime(self.fecha_liquidacion.year, 1, 1)
+            if year_date_start < self.fecha_liquidacion.year:
                 delta1 = self.fecha_liquidacion - first_day_date.date()
                 self.dias_aguinaldo = delta1.days + 1 
             else:
@@ -268,11 +237,11 @@ class GeneraLiquidaciones(models.TransientModel):
                     if lineas_vac.ano == str(ano_buscar):
                         self.dias_vacaciones += lineas_vac.dias
 
-            #prima vacacional liquidacion
-            self.dias_prima_vac = self.dias_vacaciones * self.prima_vac / 100.0
-
             #fondo de ahorro (si hay)
             self.fondo_ahorro = self.get_fondo_ahorro()
+
+            #prima vacacional liquidacion
+            self.dias_prima_vac = self.dias_vacaciones * self.prima_vac / 100.0
 
             self.refresh()
           

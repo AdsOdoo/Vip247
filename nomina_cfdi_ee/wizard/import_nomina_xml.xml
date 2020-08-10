@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_import_xml_in_nomina_form_view" model="ir.ui.view">
+            <field name="name">Importar XML</field>
+            <field name="model">import.nomina.from.xml</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <form string="Importar XML">
+                	<group>
+                		<field name="import_file" required="1" filename="file_name"/>
+                		<field name="file_name" invisible="1"/>
+                		<!--<field name="nomina_id" invisible="1"/>-->
+                	</group>
+                	<footer>
+                        <button name="import_xml_nomina_button" string="Importar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+       <act_window id="action_invoice_carger"
+            name="Cargar XML"
+            binding_model="hr.payslip"
+            res_model="import.nomina.from.xml"
+            binding_views="form"
+            view_mode="form"
+            target="new"
+            context="{}"
+            />
+
+    </data>
+</odoo>

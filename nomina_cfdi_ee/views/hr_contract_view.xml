@@ -21,7 +21,7 @@
                     <field name="sueldo_base_cotizacion" attrs="{'readonly': [('state','!=','draft')]}" />
                  </group>
                  <group>
-                    <field name="tipo_pago" attrs="{'invisible':[('periodicidad_pago','!=','04')]}"/>
+                    <field name="tipo_pago" attrs="{'invisible':[('periodicidad_pago','not in',['04', '05'])]}" />
                     <field name="tipo_prima_vacacional" />
                     <field name="sept_dia" />
                     <field name="septimo_dia" />

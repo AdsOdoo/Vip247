@@ -52,7 +52,7 @@ class Contract(models.Model):
     alimentacion_amount  = fields.Float('Monto alimentación')
     percepcion_adicional  = fields.Boolean('Percepcion adicional')
     percepcion_adicional_amount  = fields.Float('Monto percepcion adicional')
-	
+
     infonavit_fijo = fields.Float(string=_('Infonavit (fijo)'), digits = (12,4))
     infonavit_vsm = fields.Float(string=_('Infonavit (vsm)'), digits = (12,4))
     infonavit_porc = fields.Float(string=_('Infonavit (%)'), digits = (12,4))
@@ -62,7 +62,7 @@ class Contract(models.Model):
     caja_ahorro_amount  = fields.Float('Monto caja de ahorro')
     deduccion_adicional  = fields.Boolean('Deduccion adicional')
     deduccion_adicional_amount  = fields.Float('Monto deduccion adicional')
-	
+
     antiguedad_anos = fields.Float('Años de antiguedad', compute='_compute_antiguedad_anos')
 
     tabla_vacaciones = fields.One2many('tablas.vacaciones.line', 'form_id') 
@@ -74,7 +74,8 @@ class Contract(models.Model):
     )
     tipo_prima_vacacional = fields.Selection(
         selection=[('01', 'Al cumplir el año'), 
-                   ('02', 'Con día de vacaciones'),],
+                   ('02', 'Con día de vacaciones'),
+                   ('03', 'Al cumplir el año - 2da qna'),],
         string=_('Prima vacacional'),
         default = '02'
     )
