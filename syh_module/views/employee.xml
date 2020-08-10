@@ -6,14 +6,15 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
            <xpath expr="//notebook" position="inside">
-                	<div class="oe_button_box" name="button_box">
-                		<button name="action_view_paciente"
+                <div class="oe_button_box" name="button_box">
+                   <button name="action_view_paciente"
                             type="object"
                             class="oe_stat_button"
                             icon="fa-pencil-square-o"
                             attrs="{'invisible': [('paciente_count', '=', 0)]}">
                             <field name="paciente_count" widget="statinfo" string="Paciente"/>
-                        </button>
+                   </button>
+                </div>
            </xpath>
         </field>
     </record>
