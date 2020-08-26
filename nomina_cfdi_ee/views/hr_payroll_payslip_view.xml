@@ -58,6 +58,10 @@
                                 <field name="acum_isr_anual" />
                                 <field name="acum_isr_antes_subem_anual" />
                                 <field name="acum_subsidio_aplicado_anual" />
+                                <field name="acum_dev_isr" />
+                                <field name="acum_dev_subem" />
+                                <field name="acum_dev_subem_entregado" />
+                                <field name="acum_isr_ajuste" />
                             </group>
                         </group>
                 </page>

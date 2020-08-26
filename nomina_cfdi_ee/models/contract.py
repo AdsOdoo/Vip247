@@ -84,6 +84,7 @@ class Contract(models.Model):
     sept_dia = fields.Boolean(string='Séptimo día separado')
     semana_inglesa = fields.Boolean(string='Semana inglesa')
     prima_dominical = fields.Boolean(string='Prima dominical')
+    calc_isr_extra = fields.Boolean(string='Incluir nóminas extraordirias en calculo ISR mensual', default = False)
 
     @api.onchange('wage')
     def _compute_sueldo(self):

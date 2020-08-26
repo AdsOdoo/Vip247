@@ -28,6 +28,7 @@
                     <field name="incapa_sept_dia" />
                     <field name="semana_inglesa" attrs="{'invisible':[('periodicidad_pago','!=','02')]}"/>
                     <field name="prima_dominical" />
+                    <field name="calc_isr_extra" />
                  </group>
               </group>
                         <group cols="4">
