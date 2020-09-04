@@ -6,8 +6,6 @@ from collections import defaultdict
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-
-
 class CrearFaltasFromRetardos(models.TransientModel):
     _name = 'crear.faltas.from.retardos'
     _description = 'CrearFaltasFromRetardos'
@@ -33,10 +31,9 @@ class CrearFaltasFromRetardos(models.TransientModel):
         
         for emp_id,retardos in record_by_employee.items():
             record_count = len(retardos)
-            
-            if record_count > retardos_x_falta and retardos_x_falta:
+            if record_count >= retardos_x_falta and retardos_x_falta:
                 sub_days = int(record_count/retardos_x_falta)
-                fecha_inicio = en_date - relativedelta(days=sub_days)
+                fecha_inicio = en_date - relativedelta(days=sub_days) + relativedelta(days=1)
                 vals = {}
                 vals.update(default_vals)
                 vals.update({
@@ -44,7 +41,8 @@ class CrearFaltasFromRetardos(models.TransientModel):
                     'fecha_inicio' : fecha_inicio.strftime(DEFAULT_SERVER_DATE_FORMAT),
                     'fecha_fin' : en_date,
                     'tipo_de_falta': 'retardo',
+                    'dias': sub_days,
                     })
                 faltas_nomina_obj.create(vals)
-              
+
         return

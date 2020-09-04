@@ -7,15 +7,12 @@ from docutils.nodes import line
 class Payslip(models.Model):
     _inherit = 'hr.payslip'
 
-    
     def get_amount_from_rule_code(self, rule_code):
         line = self.env['hr.payslip.line'].search([('slip_id', '=', self.id), ('code', '=', rule_code)])
         if line:
             return round(sum(line.mapped('total')), 2)
         else:
             return 0.0
-
-
     
     def get_total_work_days(self):
         total = 0
@@ -23,7 +20,6 @@ class Payslip(models.Model):
             if line.code == 'WORK100' or line.code == 'FJC' or line.code == 'SEPT':
                total += line.number_of_days
         return total
-    
     
     def get_total_code_value(self,special_code):
         line_ids = self.line_ids.filtered(lambda l: l.salary_rule_id.forma_pago == special_code)
@@ -81,7 +77,6 @@ class PayslipBatches(models.Model):
                    else:
                        result[line.code] = round(line.total, 2)
         return result
-
     
     def get_payslip_group_by_department(self):
         result = {}
@@ -135,12 +130,22 @@ class PayslipBatches(models.Model):
         payslip_group_by_department = self.get_payslip_group_by_department()
         row = 1
         grand_total = {}
-        for dept in payslip_group_by_department.keys():
+        for dept in self.env['hr.department'].browse(payslip_group_by_department.keys()).sorted(lambda x:x.name):
             row += 1
-            worksheet.write_merge(row, row, 0, 2, self.env['hr.department'].browse(dept).name, text_bold_left)
+            worksheet.write_merge(row, row, 0, 2, dept.name, text_bold_left)
             total = {}
             row += 1
-            for slip in payslip_group_by_department[dept]:
+            slip_sorted_by_employee={}
+            hr_payslips=[]
+            for slip in payslip_group_by_department[dept.id]:
+                if slip.employee_id:
+                    slip_sorted_by_employee[slip.id]=slip.employee_id.no_empleado or '0'
+            for values in sorted(slip_sorted_by_employee.values()):
+                val_list = list(slip_sorted_by_employee.values())
+                key_list = list(slip_sorted_by_employee.keys())
+                slip = key_list[val_list.index(values)]  
+                hr_payslips.append(self.env['hr.payslip'].browse(slip))
+            for slip in hr_payslips:
                 if slip.state == "cancel":
                     continue
                 if slip.employee_id.no_empleado:
