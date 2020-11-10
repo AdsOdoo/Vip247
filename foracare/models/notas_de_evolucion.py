@@ -17,7 +17,9 @@ class ForacareNotasDeEvolucion(models.Model):
         mtype = [ type['MType'] for type in measure_id ]
         mslot = [ slot['MSlot'] for slot in measure_id ]
         mvalue1 = [ value1['MValue1'] for value1 in measure_id ]
-        
+        mvalue2 = [ value1['MValue2'] for value1 in measure_id ]
+        mvalue3 = [ value1['MValue3'] for value1 in measure_id ]
+
         date_time = [ value1['MDateTime'] for value1 in measure_id ][0]
         date = str(date_time)[:10]
         time = str(date_time)[11:]
